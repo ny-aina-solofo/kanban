@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react"
+import { Main } from "./components";
 
-export default function KanbanTaskApp() {
+
+const KanbanTaskApp = () => {
     return (
         <div>
-            hello            
+            <Main/>
         </div>
     )
 }
+
+export default KanbanTaskApp;
