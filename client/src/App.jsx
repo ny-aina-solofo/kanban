@@ -1,10 +1,9 @@
-import { Main } from "./components";
-
+import Main from "./pages/Main/Main";
 
 const KanbanTaskApp = () => {
     return (
         <div>
-            <Main/>
+            <Main/>            
         </div>
     )
 }

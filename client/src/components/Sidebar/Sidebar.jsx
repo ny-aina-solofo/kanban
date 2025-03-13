@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveBoard } from "../../redux/boardSlice";
+import { openModal } from "../../redux/modalSlice";
+import DropdownBoard from "../Dropdown/DropdownBoard";
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -20,6 +22,16 @@ const Sidebar = () => {
                         <span className="ms-4">Kanban-app</span>
                     </div>
                     <div className="mt-4 p-4">
+                        <div className="mb-4 navbar">
+                            <span className="">Your Board</span>
+                            <span 
+                                className=""
+                                type="button" 
+                                onClick={() => dispatch(openModal("addBoardModal"))}
+                            >
+                                <i className="bi bi-plus-lg">
+                            </i></span>
+                        </div>
                         {boards.map(board => (
                             <div 
                                 key={board.id_board} 
@@ -33,6 +45,7 @@ const Sidebar = () => {
                                     {/* <i className="bi bi-kanban"></i> */}
                                     <span className="ms-3">{board.board_name}</span>
                                 </div>
+                                <DropdownBoard board = {board} />                                    
                             </div>
                         ))}                        
                     </div>

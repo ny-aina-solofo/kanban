@@ -6,8 +6,8 @@ import { Provider } from "react-redux";
 import { store } from "../../redux/store";
 
 const boards = [
-    { name: "Platform Launch", isActive : false }, 
-    { name: "Marketing Plan", isActive : false }, 
+    { board_name : "Platform Launch" }, 
+    { board_name : "Marketing Plan" }, 
 ]
 
 const MockSidebar = () => {
@@ -24,7 +24,7 @@ describe("Board component tests", () => {
     
     it("display board",async()=>{
         render(<MockSidebar/>)
-        expect(boards.map(item => item.name)).toEqual(['Platform Launch', 'Marketing Plan']);    
+        expect(boards.map(item => item.board_name)).toEqual(['Platform Launch', 'Marketing Plan']);    
     });
     
 });
