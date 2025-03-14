@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Sidebar from "../Sidebar/Sidebar";
 import Column from "../Column/Column";
 import AddBoardModal from "../Modal/Board/AddBoardModal";
 import DeleteBoardModal from "../Modal/Board/DeleteBoardModal";
@@ -15,7 +14,6 @@ const Board = () => {
    
     return (
         <div>
-            <Sidebar />
             {activeBoard.column.length > 0  ? (
                 <div>
                     <Column 

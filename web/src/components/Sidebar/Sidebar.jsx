@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveBoard } from "../../redux/boardSlice";
+import { setSelectedBoard } from "../../redux/boardSlice";
 import { openModal } from "../../redux/modalSlice";
-import DropdownBoard from "../Dropdown/DropdownBoard";
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -18,11 +18,8 @@ const Sidebar = () => {
                 style={{ width: "300px" }}
             >
                 <div className="h-100 ">
-                    <div className="text-dark mt-2 h5 ">
-                        <span className="ms-4">Kanban-app</span>
-                    </div>
-                    <div className="mt-4 p-4">
-                        <div className="mb-4 navbar">
+                    <div className="p-4">
+                        <div className="mb-2 navbar">
                             <span className="">Your Board</span>
                             <span 
                                 className=""
@@ -35,17 +32,23 @@ const Sidebar = () => {
                         {boards.map(board => (
                             <div 
                                 key={board.id_board} 
-                                className="mb-2 p-2 border rounded d-flex justify-content-between"
-                                type = "button"
+                                className="mb-2 d-flex justify-content-between"
                             >
                                 <div
                                     className={`text-dark ${board.id_board === activeBoardId ? "fw-bold" : ""}`}     
                                     onClick={() => handleActiveBoard(board.id_board)}
                                 >
                                     {/* <i className="bi bi-kanban"></i> */}
-                                    <span className="ms-3">{board.board_name}</span>
+                                    <span className="ms-3" type = "button">{board.board_name}</span>
                                 </div>
-                                <DropdownBoard board = {board} />                                    
+                                <i 
+                                    className="bi bi-trash"  type="button"
+                                    onClick={() =>{
+                                        dispatch(openModal("deleteBoardModal"));
+                                        dispatch(setSelectedBoard(board));
+                                    }}
+                                >
+                                </i>
                             </div>
                         ))}                        
                     </div>

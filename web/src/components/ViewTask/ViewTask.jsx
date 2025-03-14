@@ -9,48 +9,27 @@ const ViewTask = ()=> {
     const selectedTask = useSelector((state) => state.tasks.selectedTask);
     const navigate = useNavigate();
     return (
-        <div className="p-4">
-            <header>
-                <div  
-                    className="d-flex justify-content-between" 
-                    type="button" 
+        <div style={{ width: "150vh", paddingLeft:"350px" }}>
+            <div className="p-4">
+                <div 
+                    className="mb-4" type="button"
+                    onClick={() => navigate(-1)}
                 >
-                    <span onClick={() => navigate(-1)}>
-                        <i className="bi bi-chevron-compact-left"></i>
-                        <span className="ms-3">Retour</span>
-                    </span>
-                    <div className="">
-                        <span 
-                            className="text-secondary" type="button"
-                            // onClick={()=>{
-                            //     openEditModal(task);
-                            //     handleClose();
-                            // }}
-                        >
-                        modifier
-                        </span>
-                        <span
-                            className="text-danger ms-4" type="button" 
-                            // onClick={()=>{
-                            //     openDeleteModal(task);
-                            //     handleClose();
-                            // }}
-                        >
-                        supprimer
-                        </span>
+                    <i className="bi bi-chevron-compact-left"></i>
+                    <span className="ms-3">Retour</span>
+                </div>
+
+                <main className="border rounded p-3">
+                    <h5 className="mb-4 mt-2 fw-bold">{selectedTask.title}</h5>
+                    <div className="mb-4">
+                        <p>{selectedTask?.description || 'no-description'}</p>
                     </div>
-                </div>
-                <div className="mb-3 mt-4">
-                    <h4 className="fw-bold">{selectedTask.title}</h4>
-                </div>
-            </header>
-            <div className="mb-4">
-                <p>{selectedTask.description}</p>
-            </div>
-            <div className="mb-4">
-                <Subtask
-                    subtasks = {selectedTask?.subtasks || []}
-                />                                
+                    <div className="">
+                        <Subtask
+                            subtasks = {selectedTask?.subtasks || []}
+                        />                                
+                    </div>
+                </main>
             </div>
         </div>
     );

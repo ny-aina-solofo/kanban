@@ -1,23 +1,24 @@
-import React,{ useState ,useEffect } from 'react'
+import React,{ useState ,useLayoutEffect } from 'react'
 
 const Subtask = ({subtasks}) => {
+    const [count,setCount] = useState(0);
+    useLayoutEffect(() => {
+        const initialCount = subtasks.filter((sub) => sub.done).length; 
+        setCount(initialCount);
+    }, [subtasks]);
 
     return(
         <div>
-            <div className="mt-3 ">
+            <div> Sous-tâches : {count} sur {subtasks.length} </div>
+            <div className="mt-4">
                 {subtasks.map((sub) =>
                     <li key={sub.id_subtask} 
                         style={{
                             display : 'flex',
-                            listStyle: 'none',
-                            marginBottom: '8px',
-                            padding: '8px',
-                            border: '1px solid #ccc',
-                            borderRadius: '4px',
-                            backgroundColor: '#f9f9f9',
+                            listStyle: 'none'
                         }}
                     > 
-                        <div className="d-flex align-items-center ms-3">
+                        <div className="d-flex align-items-center">
                             <input 
                                 type="checkbox" 
                                 className="form-check-input" 

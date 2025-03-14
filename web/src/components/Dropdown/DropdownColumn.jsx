@@ -1,8 +1,7 @@
-import { setSelectedBoard } from "../../redux/boardSlice";
 import { openModal } from "../../redux/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-const DropdownBoard = ({board}) => {
+const DropdownColumn = ({col}) => {
     const dispatch = useDispatch();
     return (
         <div>
@@ -20,11 +19,11 @@ const DropdownBoard = ({board}) => {
                     modifier
                     </li>
                     <li 
-                        className="dropdown-item text-danger" type="button" 
-                        onClick={() =>{
-                            dispatch(openModal("deleteBoardModal"));
-                            dispatch(setSelectedBoard(board));
-                        }}
+                        className="dropdown-item " type="button" 
+                        // onClick={() =>{
+                        //     dispatch(openModal("deleteBoardModal"));
+                        //     dispatch(setSelectedBoard(board));
+                        // }}
                     >
                     supprimer
                     </li>
@@ -34,4 +33,4 @@ const DropdownBoard = ({board}) => {
     )
 }
 
-export default DropdownBoard;
+export default DropdownColumn;
