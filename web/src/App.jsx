@@ -1,8 +1,8 @@
-import Board from "../../components/Board/Board";
-import ViewTask from "../../components/ViewTask/ViewTask";
+import { Board } from "./components";
+import { ViewTask } from "./components";
 import { Routes, Route, useNavigate } from "react-router";
 
-const Main = () => {
+const KanbanTaskApp = () => {
     return (
         <div>
             <Routes>
@@ -23,4 +23,4 @@ const Main = () => {
     )
 }
 
-export default Main;
+export default KanbanTaskApp;
