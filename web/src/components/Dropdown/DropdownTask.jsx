@@ -1,8 +1,9 @@
 import { openModal } from "../../redux/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-const DropdownColumn = ({col}) => {
+const DropdownTask = ({tasks}) => {
     const dispatch = useDispatch();
+
     return (
         <div>
             <div className="dropdown">
@@ -14,15 +15,15 @@ const DropdownColumn = ({col}) => {
                 <ul className="dropdown-menu" >
                     <li 
                         className="dropdown-item" type="button"
-                        // onClick={() => dispatch(openModal("editBoardModal"))} 
+                        // onClick={() => dispatch(openModal("editTaskModal"))} 
                     >
                     modifier
                     </li>
                     <li 
                         className="dropdown-item " type="button" 
                         // onClick={() =>{
-                        //     dispatch(openModal("deleteBoardModal"));
-                        //     dispatch(setSelectedBoard(board));
+                        //     dispatch(openModal("deleteTaskModal"));
+                        //     dispatch(setSelectedTask(tasks));
                         // }}
                     >
                     supprimer
@@ -33,4 +34,4 @@ const DropdownColumn = ({col}) => {
     )
 }
 
-export default DropdownColumn;
+export default DropdownTask;

@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveBoard } from "../../redux/boardSlice";
-import { setSelectedBoard } from "../../redux/boardSlice";
 import { openModal } from "../../redux/modalSlice";
 
 const Sidebar = () => {
     const dispatch = useDispatch();
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
     const boards = useSelector (state => state.boards.boards);
-    const handleActiveBoard = (boardId) => {
-        dispatch(setActiveBoard(boardId));
-    };  
+    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+    
     return (
         <div>
             <div  
@@ -19,7 +16,7 @@ const Sidebar = () => {
             >
                 <div className="h-100 ">
                     <div className="p-4">
-                        <div className="mb-2 navbar">
+                        <div className="mb-2 d-flex justify-content-between">
                             <span className="">Your Board</span>
                             <span 
                                 className=""
@@ -36,19 +33,10 @@ const Sidebar = () => {
                             >
                                 <div
                                     className={`text-dark ${board.id_board === activeBoardId ? "fw-bold" : ""}`}     
-                                    onClick={() => handleActiveBoard(board.id_board)}
+                                    onClick={() => dispatch(setActiveBoard(board.id_board)) }
                                 >
-                                    {/* <i className="bi bi-kanban"></i> */}
                                     <span className="ms-3" type = "button">{board.board_name}</span>
                                 </div>
-                                <i 
-                                    className="bi bi-trash"  type="button"
-                                    onClick={() =>{
-                                        dispatch(openModal("deleteBoardModal"));
-                                        dispatch(setSelectedBoard(board));
-                                    }}
-                                >
-                                </i>
                             </div>
                         ))}                        
                     </div>

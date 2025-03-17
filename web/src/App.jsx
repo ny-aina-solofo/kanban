@@ -1,10 +1,11 @@
-import { Board,ViewTask,Sidebar } from "./components";
+import { Board,ViewTask,Sidebar,Navbar } from "./components";
 import { Routes, Route, useNavigate } from "react-router";
 
 const KanbanTaskApp = () => {
     return (
         <div>
             <Sidebar />
+            <Navbar/>
             <Routes>
                 <Route  
                     path="/"

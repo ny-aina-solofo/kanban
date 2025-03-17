@@ -19,10 +19,8 @@ const AddBoardModal = ({}) => {
     return(
         <div >   
             <Modal show={openModal} onHide={closeModal} backdrop="static" keyboard={false}>
-                <Modal.Header>
-
-                </Modal.Header>
-                <Modal.Body className="mb-4">
+                <Modal.Body>
+                    <h5 className='fw-bold mb-5'>Ajouter un tableau</h5>
                     <label className="form-label">Nom</label>
                     <input 
                         type="text" className="form-control" name="" id="" 
@@ -34,7 +32,7 @@ const AddBoardModal = ({}) => {
                     <Button variant="secondary" onClick={cancelAddBoard}>
                         Annuler
                     </Button>
-                    <Button variant="danger" className='ms-3' onClick={handleAddBoard}>
+                    <Button variant="primary" className='ms-3' onClick={handleAddBoard}>
                         Supprimer
                     </Button>
                 </Modal.Footer>

@@ -1,0 +1,40 @@
+import { openModal } from "../../redux/modalSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedBoard } from "../../redux/boardSlice";
+
+const DropdownBoard = ({board}) => {
+    const dispatch = useDispatch();
+    return (
+        <div>
+            <div className="dropdown">
+                <i 
+                    className="bi bi-three-dots mx-2" type="button" 
+                    data-bs-toggle="dropdown" aria-expanded="false"
+                >
+                </i>
+                <ul className="dropdown-menu" >
+                    <li 
+                        className="dropdown-item" type="button"
+                        onClick={() =>{
+                            dispatch(openModal("editBoardModal"));
+                            dispatch(setSelectedBoard(board));
+                        }}                    
+                    >
+                    modifier
+                    </li>
+                    <li 
+                        className="dropdown-item " type="button" 
+                        onClick={() =>{
+                            dispatch(openModal("deleteBoardModal"));
+                            dispatch(setSelectedBoard(board));
+                        }}
+                    >
+                    supprimer
+                    </li>
+                </ul>
+            </div>
+        </div>
+    )
+}
+
+export default DropdownBoard;

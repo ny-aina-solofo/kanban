@@ -1,16 +1,11 @@
 import React,{ useState ,useLayoutEffect } from 'react'
 
 const Subtask = ({subtasks}) => {
-    const [count,setCount] = useState(0);
-    useLayoutEffect(() => {
-        const initialCount = subtasks.filter((sub) => sub.done).length; 
-        setCount(initialCount);
-    }, [subtasks]);
 
     return(
         <div>
-            <div> Sous-tâches : {count} sur {subtasks.length} </div>
-            <div className="mt-4">
+            <div>Sous-tâches : </div>
+            <div className="mt-4" style={{overflowY:"scroll", height:"70px"}}>
                 {subtasks.map((sub) =>
                     <li key={sub.id_subtask} 
                         style={{

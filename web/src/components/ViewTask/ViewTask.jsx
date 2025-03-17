@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams} from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import Subtask from "../Subtask/Subtask";
+import DropdownTask from "../Dropdown/DropdownTask";
+
 
 const ViewTask = ()=> {
     // const { id_task } = useParams();
@@ -20,7 +22,10 @@ const ViewTask = ()=> {
                 </div>
 
                 <main className="border rounded p-3">
-                    <h5 className="mb-4 mt-2 fw-bold">{selectedTask.title}</h5>
+                    <div className="d-flex justify-content-between">
+                        <h5 className="mb-4 mt-2 fw-bold">{selectedTask.title}</h5>
+                        <DropdownTask tasks = {selectedTask}/>
+                    </div>
                     <div className="mb-4">
                         <p>{selectedTask?.description || 'no-description'}</p>
                     </div>
@@ -29,6 +34,7 @@ const ViewTask = ()=> {
                             subtasks = {selectedTask?.subtasks || []}
                         />                                
                     </div>
+                    
                 </main>
             </div>
         </div>
