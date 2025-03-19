@@ -20,7 +20,7 @@ const DropdownBoard = ({board}) => {
                             dispatch(setSelectedBoard(board));
                         }}                    
                     >
-                    modifier
+                    modifier tableau
                     </li>
                     <li 
                         className="dropdown-item " type="button" 
@@ -29,7 +29,7 @@ const DropdownBoard = ({board}) => {
                             dispatch(setSelectedBoard(board));
                         }}
                     >
-                    supprimer
+                    supprimer tableau
                     </li>
                 </ul>
             </div>

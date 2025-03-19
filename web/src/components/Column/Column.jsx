@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Task from "../Task/Task";
 import TaskLength from "../Task/TaskLength";
+import { openInput } from "../../redux/inputSlice";
+import AddColumnInput from "../Input/AddColumnInput";
 
 const Column = ({columns}) => {
+    const dispatch = useDispatch();
+    const addColumnInput = useSelector((state)=>state.input.addColumnInput);
     return (
         <div>
-            <div style={{ paddingLeft:"300px",overflowX:"scroll",height:"100%" }}>
+            <div style={{ paddingLeft:"300px",overflowX:"scroll"}}>
                 <div className="mt-4 d-flex flex-row">
                     <div className="d-flex flex-row" id="kanban-column">
                         {columns.map(col => (
@@ -25,6 +29,7 @@ const Column = ({columns}) => {
                                 />
                             </div>
                         ))}
+                        {addColumnInput.open && <AddColumnInput />}
                     </div>
                     <div>
                         <div>
@@ -32,7 +37,7 @@ const Column = ({columns}) => {
                         </div>
                         <div
                             className="bg-white border ms-3 rounded p-3" type="button" 
-                            // onClick={openAddForm}
+                            onClick={()=>dispatch(openInput("addColumnInput"))}
                             style={{width:"252px", height:"60px"}}
                         >
                             <div className="">

@@ -17,6 +17,12 @@ const DropdownTask = ({tasks}) => {
                         className="dropdown-item" type="button"
                         // onClick={() => dispatch(openModal("editTaskModal"))} 
                     >
+                    ajouter sous-tâches
+                    </li>
+                    <li 
+                        className="dropdown-item" type="button"
+                        // onClick={() => dispatch(openModal("editTaskModal"))} 
+                    >
                     modifier
                     </li>
                     <li 

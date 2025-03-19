@@ -4,6 +4,7 @@ import Column from "../Column/Column";
 import AddBoardModal from "../Modal/Board/AddBoardModal";
 import DeleteBoardModal from "../Modal/Board/DeleteBoardModal";
 import EditBoardModal from "../Modal/Board/EditBoardModal";
+import Navbar from "../Navbar/Navbar";
 
 const Board = () => {
     const boards = useSelector((state) => state.boards.boards);
@@ -16,6 +17,7 @@ const Board = () => {
    
     return (
         <div>
+            <Navbar/>
             {activeBoard.column.length > 0  ? (
                 <div>
                     <Column 
