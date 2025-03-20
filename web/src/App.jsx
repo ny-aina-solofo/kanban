@@ -5,7 +5,6 @@ const KanbanTaskApp = () => {
     return (
         <div>
             <Sidebar />
-            {/* <Navbar/> */}
             <Routes>
                 <Route  
                     path="/"

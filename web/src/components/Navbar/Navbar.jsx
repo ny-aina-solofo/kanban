@@ -1,9 +1,12 @@
 import React,{ useState ,useLayoutEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import DropdownBoard from "../Dropdown/DropdownBoard";
+import { openModal } from '../../redux/modalSlice';
+import { setSelectedBoard } from '../../redux/boardSlice';
 
 
 const Navbar = () => {
+    const dispatch = useDispatch();
     const boards = useSelector((state) => state.boards.boards);
     const activeBoardId = useSelector(state => state.boards.activeBoardId);
     const activeBoard = boards.find(board => board.id_board === activeBoardId);
@@ -17,7 +20,13 @@ const Navbar = () => {
                 <div className="d-flex justify-content-between p-2">
                     <h5>{activeBoard.board_name}</h5>
                     <div className="d-flex">
-                        <button className="btn btn-secondary rounded-pill" type="button">
+                        <button 
+                            className="btn btn-secondary rounded-pill" type="button"
+                            onClick={()=>{
+                                dispatch(openModal("addTaskModal"));
+                                dispatch(setSelectedBoard(activeBoard))
+                            }}
+                        >
                             <i className="bi bi-plus"></i><span className="ms-2">Ajouter</span>
                         </button>
                         <DropdownBoard board={activeBoard}/>

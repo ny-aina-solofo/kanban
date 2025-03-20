@@ -17,14 +17,14 @@ const ProgressBar = ({subtasks}) => {
         <div>
             <div 
                 className="progress mt-3" role="progressbar" aria-label="Example 10px high" aria-valuenow="25" 
-                aria-valuemin="0" aria-valuemax="100" style={{height:10+'px'}}   
+                aria-valuemin="0" aria-valuemax="100" style={{height:'5px'}}   
                 >
                 <div className="progress-bar" style={{width: `${progressValue}` + '%'}}></div>
             </div>
-            <div className='mt-2 d-flex justify-content-between'>
-                <p>Progression</p>
-                <p>{count}/{subtask.length}</p>
-            </div>         
+            {/* <div className='mt-2 d-flex justify-content-between'>
+                <small>Progression</small>
+                <small>{count}/{subtask.length}</small>
+            </div>          */}
         </div>
     )
 }

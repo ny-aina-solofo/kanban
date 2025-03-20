@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import Task from "../Task/Task";
 import TaskLength from "../Task/TaskLength";
 import { openInput } from "../../redux/inputSlice";
-import AddColumnInput from "../Input/AddColumnInput";
+import AddColumn from "../Input/Column/AddColumn";
 
 const Column = ({columns}) => {
     const dispatch = useDispatch();
-    const addColumnInput = useSelector((state)=>state.input.addColumnInput);
+    const addColumn = useSelector((state)=>state.input.addColumn);
     return (
         <div>
             <div style={{ paddingLeft:"300px",overflowX:"scroll"}}>
@@ -29,7 +29,7 @@ const Column = ({columns}) => {
                                 />
                             </div>
                         ))}
-                        {addColumnInput.open && <AddColumnInput />}
+                        {addColumn.open && <AddColumn />}
                     </div>
                     <div>
                         <div>

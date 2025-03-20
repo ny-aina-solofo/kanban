@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     addBoardModal: { open: false },
     deleteBoardModal: { open: false },
-    editBoardModal: { open : false }
+    editBoardModal: { open : false },
+    addTaskModal: { open: false },
+    deleteTaskModal: { open: false },
 };
 
 const modalSlice = createSlice({

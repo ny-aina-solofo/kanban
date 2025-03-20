@@ -5,4 +5,11 @@ import Sidebar from "./Sidebar/Sidebar";
 import Task from "./Task/Task";
 import ViewTask from "./ViewTask/ViewTask";
 
-export { Board,Column,Sidebar,Task,ViewTask,Navbar };
+export { 
+    Board,
+    Column,
+    Sidebar,
+    Task,
+    ViewTask,
+    Navbar 
+};

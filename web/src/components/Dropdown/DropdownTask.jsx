@@ -1,5 +1,7 @@
 import { openModal } from "../../redux/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { setSelectedTask } from "../../redux/taskSlice";
+import { openInput } from "../../redux/inputSlice";
 
 const DropdownTask = ({tasks}) => {
     const dispatch = useDispatch();
@@ -15,22 +17,16 @@ const DropdownTask = ({tasks}) => {
                 <ul className="dropdown-menu" >
                     <li 
                         className="dropdown-item" type="button"
-                        // onClick={() => dispatch(openModal("editTaskModal"))} 
+                        onClick={() => dispatch(openInput("addSubtask"))} 
                     >
                     ajouter sous-tâches
                     </li>
                     <li 
-                        className="dropdown-item" type="button"
-                        // onClick={() => dispatch(openModal("editTaskModal"))} 
-                    >
-                    modifier
-                    </li>
-                    <li 
                         className="dropdown-item " type="button" 
-                        // onClick={() =>{
-                        //     dispatch(openModal("deleteTaskModal"));
-                        //     dispatch(setSelectedTask(tasks));
-                        // }}
+                        onClick={() =>{
+                            dispatch(openModal("deleteTaskModal"));
+                            dispatch(setSelectedTask(tasks));
+                        }}
                     >
                     supprimer
                     </li>

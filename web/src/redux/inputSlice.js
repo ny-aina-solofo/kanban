@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    addColumnInput: { open : false } ,
-
+    addColumn: { open : false } ,
+    editDescription: { open : false },
+    editTitle : { open : false },
+    addSubtask : { open : false },
 };
 
 const inputSlice = createSlice({
