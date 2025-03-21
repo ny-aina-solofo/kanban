@@ -1,6 +1,7 @@
 import { openModal } from "../../redux/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedBoard } from "../../redux/boardSlice";
+import React from "react";
 
 const DropdownBoard = ({board}) => {
     const dispatch = useDispatch();

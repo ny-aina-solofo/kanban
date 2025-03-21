@@ -4,27 +4,30 @@ import React from "react";
 import Board from "../Board/Board";
 import { Provider } from "react-redux";
 import { store } from "../../redux/store";
-
-const boards = [
-    { board_name : "Platform Launch" }, 
-    { board_name : "Marketing Plan" }, 
-]
+import { BrowserRouter } from "react-router";
 
 const MockBoard = () => {
-    return (
+    return(
         <Provider store={store}>
-            <Board/>
+            <BrowserRouter>
+                <Board />
+            </BrowserRouter>
         </Provider>
-    );
-};
+    )
+}
 
-afterEach(cleanup);
+describe("Board Component", () => {
 
-describe("Board component tests", () => {
-    
-    it("display board",async()=>{
-        render(<MockBoard/>)
-        expect(boards.map(item => item.board_name)).toEqual(['Platform Launch', 'Marketing Plan']);    
+    it("Should activeBoard and activeBoardId is defined ", () => {
+        render(<MockBoard/>);
+        expect(store.getState().boards.boards).toBeDefined();
+        expect(store.getState().boards.activeBoardId).toBeDefined();
     });
-    
+    it("Should board modal is defined ", () => {
+        render(<MockBoard/>);
+        expect(store.getState().modal.addBoardModal).toBeDefined();
+        expect(store.getState().modal.editBoardModal).toBeDefined();
+        expect(store.getState().modal.deleteBoardModal).toBeDefined();
+    });
+
 });

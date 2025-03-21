@@ -18,7 +18,8 @@ const Sidebar = () => {
                     <div className="p-4">
                         <div className="mb-2 d-flex justify-content-between">
                             <span className="">Your Board</span>
-                            <span 
+                            <span
+                                data-testid="add-board" 
                                 className=""
                                 type="button" 
                                 onClick={() => dispatch(openModal("addBoardModal"))}
@@ -32,6 +33,7 @@ const Sidebar = () => {
                                 className="mb-2 d-flex justify-content-between"
                             >
                                 <div
+                                    data-testid="board-list"
                                     className={`text-dark ${board.id_board === activeBoardId ? "fw-bold" : ""}`}     
                                     onClick={() => dispatch(setActiveBoard(board.id_board)) }
                                 >

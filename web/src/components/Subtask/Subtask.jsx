@@ -41,6 +41,7 @@ const Subtask = ({subtasks}) => {
                             </div>
                             <div>
                                 <i 
+                                    data-testid="delete-button"
                                     className="bi bi-x-lg ms-2"  type="button"
                                     onClick={()=>deleteSubtask(sub.id_subtask)}
                                 >

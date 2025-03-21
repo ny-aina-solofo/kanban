@@ -36,8 +36,9 @@ const Column = ({columns}) => {
                             <p>&nbsp;</p>
                         </div>
                         <div
+                            data-testid="add-column-button"
                             className="bg-white border ms-3 rounded p-3" type="button" 
-                            onClick={()=>dispatch(openInput("addColumnInput"))}
+                            onClick={()=>dispatch(openInput("addColumn"))}
                             style={{width:"252px", height:"60px"}}
                         >
                             <div className="">

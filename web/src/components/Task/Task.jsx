@@ -16,6 +16,7 @@ const Task = ({tasks}) => {
                     {tasks.map((task) => (
                         <Link 
                             key={task.id_task}
+                            data-testid="view-task"
                             to={`/view-task/${task.id_task}`}
                             onClick={() => dispatch(setSelectedTask(task))} 
                         >
