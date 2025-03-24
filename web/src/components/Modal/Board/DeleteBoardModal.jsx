@@ -3,12 +3,14 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { openModal,closeModal } from '../../../redux/modalSlice';
 import { useSelector, useDispatch } from "react-redux";
+import { deleteBoard } from '../../../redux/boardSlice';
 
 const DeleteBoardModal = ({}) => {
     const dispatch = useDispatch();
     const selectedBoard = useSelector((state) => state.boards.selectedBoard);    
     
     const handleDeleteBoard = (id_board)=>{
+        dispatch(deleteBoard(id_board));
         dispatch(closeModal());
         console.log(id_board);
     }
