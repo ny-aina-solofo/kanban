@@ -3,20 +3,20 @@ import Modal from 'react-bootstrap/Modal';
 import { openModal,closeModal } from '../../../redux/modalSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { editBoard } from '../../../redux/boardSlice';
+import EditColumn from '../../Input/Column/EditColumn';
 
 const EditBoardModal = () => {
     const dispatch = useDispatch();
     const selectedBoard = useSelector((state) => state.boards.selectedBoard);    
     const [boardName,setBoardName]= useState(selectedBoard.board_name);
-    const columns = selectedBoard?.column || [] ;
-    const [columnName, setColumnName] = useState('');
-
+    const [columns, setColumns] = useState(selectedBoard?.column || [] );
+    
     const handleEditBoard = (id_board)=>{
-        dispatch(editBoard({id_board,boardName}))
+        dispatch(editBoard({id_board,boardName,columns}))
         dispatch(closeModal());
         console.log(id_board);
     }
- 
+    
     return(
         <div>
             <Modal show={openModal} onHide={closeModal} backdrop="static" keyboard={false}>
@@ -38,30 +38,8 @@ const EditBoardModal = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="form-label">Colonnes</label>
-                        {columns.length > 0 ? (
-                            <div className="">
-                                {columns.map(col => (
-                                    <div 
-                                        key={col.id_column} 
-                                        className='mb-3'
-                                    >
-                                        <div className="d-flex flex-row">
-                                            <input 
-                                                type="text" 
-                                                className="form-control" 
-                                                name="" id="" aria-describedby="helpId" 
-                                                value={columnName || col.column_name}
-                                                onChange={(e)=>setColumnName(e.target.value)}
-                                            />
-                                            <i className="bi bi-x-lg ms-2 mt-2" type="button"></i>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div></div>
-                        )}
+                        <label className="form-label">Modifier Colonnes</label>
+                        <EditColumn columns={columns} setColumns={setColumns}/>
                     </div>
                     <button 
                         className='btn btn-primary form form-control' 
