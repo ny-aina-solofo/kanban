@@ -18,16 +18,16 @@ const Board = () => {
     return (
         <div>
             <Navbar/>
-            {activeBoard.column.length > 0  ? (
+            {activeBoard ? (
                 <div>
                     <Column 
                         columns= {activeBoard?.column || []} 
                     />
                 </div>
             ) : (
-                <div className="text-center text-muted mt-3">
+                <div className="ms-2 text-center text-muted mt-3">
                     Aucun tableau de colonnes n'est disponible. 
-                    Cliquez sur <strong>+ New Board</strong> pour en ajouter une.
+                    Cliquez sur <strong>+</strong> pour en ajouter une.
                 </div>
             )}
             {addBoardModal.open && <AddBoardModal />}

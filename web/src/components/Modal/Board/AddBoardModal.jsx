@@ -3,12 +3,15 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { openModal,closeModal } from '../../../redux/modalSlice';
 import { useSelector, useDispatch } from "react-redux";
+import { addBoard } from '../../../redux/boardSlice';
 
 const AddBoardModal = ({}) => {
     const dispatch = useDispatch();
     const [boardName,setBoardName]= useState('');
     
     const handleAddBoard = ()=>{
+        if (!boardName) return;
+        dispatch(addBoard(boardName));
         setBoardName('');
         dispatch(closeModal());
     }
@@ -33,7 +36,7 @@ const AddBoardModal = ({}) => {
                         Annuler
                     </Button>
                     <Button variant="primary" className='ms-3' onClick={handleAddBoard}>
-                        Supprimer
+                        Enregistrer
                     </Button>
                 </Modal.Footer>
             </Modal>          
