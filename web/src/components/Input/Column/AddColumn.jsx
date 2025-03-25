@@ -1,16 +1,19 @@
 import React,{ useState ,useLayoutEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeInput } from "../../../redux/inputSlice";
+import { addColumn } from '../../../redux/boardSlice';
 
 const AddColumn = () => {
     const [inputValue,setInputValue] = useState('');
     const dispatch = useDispatch();
-
-    const addColumn = ()=>{
+    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+   
+    const handleAddColumn = ()=>{
         if (!inputValue) return;
-        // dispatch({ type: 'add_item', libelle : inputValue });
+        dispatch(addColumn({columnName : inputValue, id_board : activeBoardId}));
         dispatch(closeInput());
         setInputValue('');
+        // console.log(activeBoardId,inputValue);
     }
     return(
         <div className='mx-3' style={{width:"252px", height:"60px"}}>
@@ -32,7 +35,7 @@ const AddColumn = () => {
             <div className='d-flex mt-2'>
                 <button 
                     className="btn btn-primary" type="button" 
-                    onClick={addColumn}
+                    onClick={handleAddColumn}
                 >
                     Ajouter
                 </button>

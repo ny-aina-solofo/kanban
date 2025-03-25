@@ -34,14 +34,22 @@ const boardSlice = createSlice({
             state.activeBoardId = initialState.activeBoardId;
         },
         editBoard: (state, action) => {
-            const { id_board, boardName } = action.payload;
+            const { id_board, boardName, columns } = action.payload;
             const board = state.boards.find((board) => board.id_board === id_board);
             if (board) {
               board.board_name = boardName;
-            //   board.columns = columns;
+              board.column = columns;
             }
         },
-        
+        addColumn : (state, action) => {
+            const {id_board,columnName} = action.payload;
+            const newID = nanoid();
+            const board = state.boards.find((board) => board.id_board === id_board);
+            // console.log(id_board,columnName);
+            const column = board?.column || [];
+            const newColumn = {id_column:newID, column_name:columnName, id_board:id_board, tasks:[]};
+            column.push(newColumn);
+        },    
     }
 })
 
@@ -51,6 +59,7 @@ export const {
     addBoard,
     deleteBoard,
     editBoard,
+    addColumn,
 } = boardSlice.actions;
 export default boardSlice.reducer;
 
