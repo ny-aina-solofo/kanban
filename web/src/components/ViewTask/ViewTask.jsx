@@ -13,7 +13,7 @@ const ViewTask = ()=> {
     // const { id_task } = useParams();
     // console.log(id_task);
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state) => state.tasks.selectedTask);
+    const selectedTask = useSelector((state) => state.boards.selectedTask);
     const navigate = useNavigate();
     const deleteTaskModal = useSelector((state) => state.modal.deleteTaskModal);
     const editDescription = useSelector((state)=>state.input.editDescription);

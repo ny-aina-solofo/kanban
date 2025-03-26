@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import DropdownBoard from "../Dropdown/DropdownBoard";
 import { openModal } from '../../redux/modalSlice';
 import { setSelectedBoard } from '../../redux/boardSlice';
+import AddTaskModal from '../Modal/Task/AddTaskModal';
 
 
 const Navbar = () => {
@@ -10,7 +11,8 @@ const Navbar = () => {
     const boards = useSelector((state) => state.boards.boards);
     const activeBoardId = useSelector(state => state.boards.activeBoardId);
     const activeBoard = boards.find(board => board.id_board === activeBoardId);
-
+    const addTaskModal = useSelector((state) => state.modal.addTaskModal);
+    
     return(
         <div>
             <div 
@@ -24,7 +26,7 @@ const Navbar = () => {
                             className="btn btn-secondary rounded-pill" type="button"
                             onClick={()=>{
                                 dispatch(openModal("addTaskModal"));
-                                dispatch(setSelectedBoard(activeBoard))
+                                // dispatch(setSelectedBoard(activeBoard))
                             }}
                         >
                             <i className="bi bi-plus"></i><span className="ms-2">Ajouter</span>
@@ -33,6 +35,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
+            {addTaskModal.open && <AddTaskModal/>}
         </div>
     )
 }

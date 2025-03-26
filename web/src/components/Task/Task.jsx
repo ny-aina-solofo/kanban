@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router";
-import { setSelectedTask } from "../../redux/taskSlice";
+import { setSelectedTask } from "../../redux/boardSlice";
 import ProgressBar from "../ProgressBar";
-import AddTaskModal from "../Modal/Task/AddTaskModal";
 
 const Task = ({tasks}) => {
     const dispatch = useDispatch();
-    const addTaskModal = useSelector((state) => state.modal.addTaskModal);
-    
+
     return (
         <div>
             {tasks.length > 0 ?(
@@ -38,7 +36,6 @@ const Task = ({tasks}) => {
             ) : (
                 <div style={{ height: "100%", width: "250px" }}></div>
             )}
-        {addTaskModal.open && <AddTaskModal/>}
         </div>
     )
 }

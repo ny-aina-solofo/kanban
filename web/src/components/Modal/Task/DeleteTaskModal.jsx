@@ -3,14 +3,20 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { openModal,closeModal } from '../../../redux/modalSlice';
 import { useSelector, useDispatch } from "react-redux";
+import { deleteTask } from '../../../redux/boardSlice';
+import { useNavigate } from 'react-router';
 
 const DeleteTaskModal = ({}) => {
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state) => state.tasks.selectedTask);    
+    const selectedTask = useSelector((state) => state.boards.selectedTask);    
+    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+    const navigate = useNavigate();
     
-    const handleDeleteTask = (id_task)=>{
+    const handleDeleteTask = (task)=>{
+        dispatch(deleteTask({task,activeBoardId}));
         dispatch(closeModal());
-        console.log(id_task);
+        navigate(-1);
+        // console.log(selectedTask.id_column);
     }
     return (
         <div>
@@ -27,7 +33,7 @@ const DeleteTaskModal = ({}) => {
                         Annuler
                     </Button>
                     <Button variant="danger" className='ms-3' onClick={()=>{
-                        handleDeleteTask(selectedTask.id_task);
+                        handleDeleteTask(selectedTask);
                     }}>
                         Supprimer
                     </Button>

@@ -1,6 +1,6 @@
 import { openModal } from "../../redux/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { setSelectedTask } from "../../redux/taskSlice";
+import { setSelectedTask } from "../../redux/boardSlice";
 import { openInput } from "../../redux/inputSlice";
 
 const DropdownTask = ({tasks}) => {
