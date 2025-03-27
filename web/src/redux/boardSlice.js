@@ -64,12 +64,7 @@ const boardSlice = createSlice({
             const board = state.boards.find((board) => board.id_board === id_board);
             const column = board.column.find((col) => col.id_column === id_column);
             const newSubtasks = subtasks.map((name) => {
-                return {
-                    id_subtask : Date.now(),
-                    libelle : name,
-                    done : false,
-                    id_task : newID,
-                };
+                return {id_subtask : Date.now(),libelle : name,done : false,id_task : newID,};
             });
             const newTask = {
                 id_task : newID,
@@ -86,6 +81,31 @@ const boardSlice = createSlice({
             const column = board.column.find((col) => col.id_column === task.id_column);
             column.tasks = column.tasks.filter((t) => t.id_task !== task.id_task);
         },
+        editDescription: (state, action) => {
+            const {description,task,activeBoardId} = action.payload;
+            const board = state.boards.find((board) => board.id_board === activeBoardId);
+            const column = board.column.find((col) => col.id_column === task.id_column);
+            column.tasks = column.tasks.map((t) => 
+                t.id_task !== task.id_task ? t : {...t,description : description}
+            );
+            // Met à jour selectedTask directement après modification
+            if (state.selectedTask.id_task === task.id_task) {
+                state.selectedTask.description = description;
+            }
+        },
+        editTitle: (state, action) => {
+            const {title,task,activeBoardId} = action.payload;
+            const board = state.boards.find((board) => board.id_board === activeBoardId);
+            const column = board.column.find((col) => col.id_column === task.id_column);
+            column.tasks = column.tasks.map((t) => 
+                t.id_task !== task.id_task ? t : {...t,title : title}
+            );
+            // Met à jour selectedTask directement après modification
+            if (state.selectedTask.id_task === task.id_task) {
+                state.selectedTask.title = title;
+            }
+        },
+
             
     }
 })
@@ -100,6 +120,8 @@ export const {
     setSelectedTask,
     addTask,
     deleteTask,
+    editDescription,
+    editTitle,
 } = boardSlice.actions;
 export default boardSlice.reducer;
 

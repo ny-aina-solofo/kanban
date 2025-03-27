@@ -1,14 +1,22 @@
 import React,{ useState ,useLayoutEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeInput } from '../../../redux/inputSlice';
+import { editTitle } from '../../../redux/boardSlice';
 
-const EditTitle = ({initialValue}) => {
-    const [inputValue,setInputValue] = useState(initialValue);
+const EditTitle = () => {
     const dispatch = useDispatch();
-
-    const editTitle = ()=>{
+    const selectedTask = useSelector((state) => state.boards.selectedTask);    
+    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+    const [inputValue,setInputValue] = useState(selectedTask.title);
+    
+    const handleEdit = ()=>{
         if (!inputValue) return;
-        // dispatch({ type: 'add_item', libelle : inputValue });
+        dispatch(editTitle({
+            title : inputValue,
+            task : selectedTask,
+            activeBoardId
+        })); 
+
         dispatch(closeInput());
         setInputValue('');
     }
@@ -24,7 +32,7 @@ const EditTitle = ({initialValue}) => {
                         e.preventDefault();
                         setInputValue(e.target.value);
                     }}
-                    onKeyDown={e => e.key === "Enter" ? editTitle() : ""}
+                    onKeyDown={e => e.key === "Enter" ? handleEdit() : ""}
                 />
             </div>
         </div>

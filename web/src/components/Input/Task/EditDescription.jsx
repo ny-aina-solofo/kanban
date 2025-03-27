@@ -1,14 +1,21 @@
 import React,{ useState ,useLayoutEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeInput } from "../../../redux/inputSlice";
+import { editDescription } from '../../../redux/boardSlice';
 
-const EditDescription = ({initialValue}) => {
-    const [inputValue,setInputValue] = useState(initialValue);
+const EditDescription = () => {
     const dispatch = useDispatch();
+    const selectedTask = useSelector((state) => state.boards.selectedTask);    
+    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+    const [inputValue,setInputValue] = useState(selectedTask.description);
 
-    const editDescription = ()=>{
+    const handleEdit = ()=>{
         if (!inputValue) return;
-        // dispatch({ type: 'add_item', libelle : inputValue });
+        dispatch(editDescription({
+            description : inputValue,
+            task : selectedTask,
+            activeBoardId
+        })); 
         dispatch(closeInput());
         setInputValue('');
     }
@@ -24,7 +31,7 @@ const EditDescription = ({initialValue}) => {
             <div className='d-flex mt-2'>
                 <button 
                     className="btn btn-primary" type="button" 
-                    onClick={editDescription}
+                    onClick={handleEdit}
                 >
                     sauvegarder
                 </button>

@@ -18,7 +18,7 @@ const ViewTask = ()=> {
     const deleteTaskModal = useSelector((state) => state.modal.deleteTaskModal);
     const editDescription = useSelector((state)=>state.input.editDescription);
     const editTitle = useSelector((state)=>state.input.editTitle);
-
+    
     return (
         <div style={{ width: "150vh", paddingLeft:"350px" }}>
             <div className="p-4">
@@ -33,7 +33,7 @@ const ViewTask = ()=> {
                 <main className="border rounded p-3">
                     <div className="d-flex justify-content-between">
                         {editTitle.open ? (
-                            <EditTitle initialValue={selectedTask?.title} />
+                            <EditTitle/>
                         ) : (
                             <h5 
                                 className="mb-4 mt-2 fw-bold" type="button"
@@ -46,7 +46,7 @@ const ViewTask = ()=> {
                     </div>
                     <div className="mb-4">
                         {editDescription.open ? (
-                            <EditDescription  initialValue={selectedTask?.description} />
+                            <EditDescription/>
                         ) : (
                             <p type="button" onClick={() => dispatch(openInput("editDescription"))}>
                                 {selectedTask?.description || "No description"}
