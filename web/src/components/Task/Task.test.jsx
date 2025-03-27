@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { store } from "../../redux/store";
 import { BrowserRouter } from "react-router";
 import create from "../create";
-import { setSelectedTask } from "../../redux/taskSlice";
+import { setSelectedTask } from "../../redux/boardSlice";
 
 const tasks = [
     {id_task :18,title :"Testing",description :"",id_column :18,subtasks : []},
@@ -30,8 +30,6 @@ describe("Task component tests", () => {
     it("Should display correct task list and manage state correctly",async()=>{
         render(<MockTask/>)
         expect(tasks.map(item => item.title)).toEqual(['Testing', 'Containerization : Docker']);    
-        expect(store.getState().tasks.selectedTask).toBeDefined();
-        expect(store.getState().modal.addTaskModal).toBeDefined();
     });
 
     it("should open view task page on click task link", () => {

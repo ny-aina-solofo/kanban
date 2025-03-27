@@ -1,14 +1,21 @@
 import React,{ useState ,useLayoutEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeInput } from '../../../redux/inputSlice';
+import { addSubtask } from '../../../redux/boardSlice';
 
 const AddSubtask = () => {
-    const [inputValue,setInputValue] = useState('');
     const dispatch = useDispatch();
-
-    const addSubtask = ()=>{
+    const [inputValue,setInputValue] = useState('');
+    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+    const selectedTask = useSelector((state) => state.boards.selectedTask);
+    
+    const handleAddSubtask = ()=>{
         if (!inputValue) return;
-        // dispatch({ type: 'add_item', libelle : inputValue });
+        dispatch(addSubtask({
+            libelle : inputValue,
+            tasks : selectedTask,
+            activeBoardId
+        })); 
         dispatch(closeInput());
         setInputValue('');
     }
@@ -29,7 +36,7 @@ const AddSubtask = () => {
             <div className='d-flex mt-2'>
                 <button 
                     className="btn btn-primary" type="button" 
-                    onClick={addSubtask}
+                    onClick={handleAddSubtask}
                 >
                     Ajouter
                 </button>

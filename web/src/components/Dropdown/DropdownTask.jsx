@@ -5,7 +5,8 @@ import { openInput } from "../../redux/inputSlice";
 
 const DropdownTask = ({tasks}) => {
     const dispatch = useDispatch();
-
+    const selectedTask = useSelector((state) => state.boards.selectedTask);
+    
     return (
         <div>
             <div className="dropdown">
@@ -25,7 +26,7 @@ const DropdownTask = ({tasks}) => {
                         className="dropdown-item " type="button" 
                         onClick={() =>{
                             dispatch(openModal("deleteTaskModal"));
-                            dispatch(setSelectedTask(tasks));
+                            dispatch(setSelectedTask(selectedTask));
                         }}
                     >
                     supprimer

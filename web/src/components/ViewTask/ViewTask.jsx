@@ -7,6 +7,7 @@ import DeleteTaskModal from "../Modal/Task/DeleteTaskModal";
 import EditDescription from "../Input/Task/EditDescription";
 import { openInput } from "../../redux/inputSlice";
 import EditTitle from "../Input/Task/EditTitle";
+import { setSelectedTask } from "../../redux/boardSlice";
 
 
 const ViewTask = ()=> {
@@ -19,6 +20,15 @@ const ViewTask = ()=> {
     const editDescription = useSelector((state)=>state.input.editDescription);
     const editTitle = useSelector((state)=>state.input.editTitle);
     
+    useEffect(() => {
+        if (!selectedTask?.id_task) {
+            const savedTask = localStorage.getItem("selectedTask");
+            if (savedTask) {
+                dispatch(setSelectedTask(JSON.parse(savedTask))); // 🔥 Restaurer
+            }
+        }
+    }, [selectedTask, dispatch]);
+
     return (
         <div style={{ width: "150vh", paddingLeft:"350px" }}>
             <div className="p-4">
@@ -42,7 +52,7 @@ const ViewTask = ()=> {
                                 {selectedTask.title}
                             </h5>
                         )}
-                        <DropdownTask tasks = {selectedTask}/>
+                        <DropdownTask/>
                     </div>
                     <div className="mb-4">
                         {editDescription.open ? (
@@ -54,9 +64,7 @@ const ViewTask = ()=> {
                         )}
                     </div>
                     <div className="">
-                        <Subtask
-                            subtasks = {selectedTask?.subtasks || []}
-                            />                                
+                        <Subtask subtasks={selectedTask?.subtasks || []}/>                                
                     </div>
                     
                 </main>

@@ -1,18 +1,19 @@
 import React,{ useState ,useLayoutEffect } from 'react'
 import AddSubtask from '../Input/Subtask/AddSubtask';
 import { useDispatch,useSelector } from 'react-redux';
+import { deleteSubtask, updateCheckbox } from '../../redux/boardSlice';
 
 const Subtask = ({subtasks}) => {
     const dispatch = useDispatch();
+    const selectedTask = useSelector((state) => state.boards.selectedTask);
+    const activeBoardId = useSelector(state => state.boards.activeBoardId);
     const addSubtask = useSelector((state)=>state.input.addSubtask);
-    const updateCheckbox = (id_subtask)=>{
-        console.log(id_subtask);
-        // dispatch({ type: 'update_checkbox', id : id });
-        // const done = !todo.done;
-        // todolistService.updateCheckbox(id,done).then((response)=>{});
+
+    const updateDone = (id_subtask)=>{
+        dispatch(updateCheckbox({id_subtask,tasks : selectedTask,activeBoardId})); 
     }
-    const deleteSubtask = (id_subtask)=>{
-        console.log(id_subtask);
+    const handleDelete = (id_subtask)=>{
+        dispatch(deleteSubtask({id_subtask,tasks : selectedTask,activeBoardId})); 
     }
     return(
         <div>
@@ -33,7 +34,7 @@ const Subtask = ({subtasks}) => {
                                     type="checkbox" 
                                     className="form-check-input" 
                                     checked={sub.done} 
-                                    onChange={()=>updateCheckbox(sub.id_subtask)}
+                                    onChange={()=>updateDone(sub.id_subtask)}
                                 />
                                 <span className='ms-2' style={{textDecoration: sub.done ? 'line-through' : 'none'}}>
                                     {sub.libelle}
@@ -43,7 +44,7 @@ const Subtask = ({subtasks}) => {
                                 <i 
                                     data-testid="delete-button"
                                     className="bi bi-x-lg ms-2"  type="button"
-                                    onClick={()=>deleteSubtask(sub.id_subtask)}
+                                    onClick={()=>handleDelete(sub.id_subtask)}
                                 >
                                 </i>
                             </div>

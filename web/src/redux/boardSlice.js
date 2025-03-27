@@ -43,7 +43,7 @@ const boardSlice = createSlice({
             }
         },
 
-        // column
+        // Column :
         addColumn : (state, action) => {
             const {id_board,columnName} = action.payload;
             const newID = nanoid();
@@ -54,9 +54,10 @@ const boardSlice = createSlice({
             column.push(newColumn);            
         },
 
-        // task
+        // Task :
         setSelectedTask : (state,action) => {
             state.selectedTask = action.payload;
+            localStorage.setItem("selectedTask", JSON.stringify(action.payload));
         },
         addTask : (state, action) => {
             const { taskName,description,id_column,subtasks,id_board } = action.payload;
@@ -100,11 +101,59 @@ const boardSlice = createSlice({
             column.tasks = column.tasks.map((t) => 
                 t.id_task !== task.id_task ? t : {...t,title : title}
             );
-            // Met à jour selectedTask directement après modification
+            // Mis à jour état locale
             if (state.selectedTask.id_task === task.id_task) {
                 state.selectedTask.title = title;
             }
         },
+
+        // Subtask :
+        addSubtask : (state, action) => {
+            const {libelle,tasks,activeBoardId} = action.payload;
+            const board = state.boards.find((board) => board.id_board === activeBoardId);
+            const column = board.column.find((col) => col.id_column === tasks.id_column);
+            const task = column.tasks.find((t) => t.id_task === tasks.id_task);
+            const newSubtasks = {
+                id_subtask : Date.now(),
+                libelle : libelle,
+                done : false ,
+                id_task : task.id_task
+            };
+            task.subtasks = [...(task.subtasks || []), newSubtasks];
+
+            if (state.selectedTask.id_task === tasks.id_task) {
+                state.selectedTask.subtasks = [...(state.selectedTask.subtasks || []),newSubtasks];
+            }
+        }, 
+        updateCheckbox: (state, action) => {
+            const {id_subtask,tasks,activeBoardId} = action.payload;
+            const board = state.boards.find((board) => board.id_board === activeBoardId);
+            const column = board.column.find((col) => col.id_column === tasks.id_column);
+            const task = column.tasks.find((t) => t.id_task === tasks.id_task);
+            const subtask = task.subtasks.find((s) => s.id_subtask === id_subtask);
+            subtask.done = !subtask.done
+            
+            if (state.selectedTask.id_task === tasks.id_task) {
+                const selectedSubtask = state.selectedTask.subtasks.find((s) => 
+                    s.id_subtask === id_subtask
+                );
+                selectedSubtask.done = !selectedSubtask.done;
+            }
+        },
+        deleteSubtask: (state, action) => {
+            const {id_subtask,tasks,activeBoardId} = action.payload;
+            const board = state.boards.find((board) => board.id_board === activeBoardId);
+            const column = board.column.find((col) => col.id_column === tasks.id_column);
+            const task = column.tasks.find((t) => t.id_task === tasks.id_task);
+            task.subtasks = task.subtasks.filter((s) => s.id_subtask !== id_subtask);
+            
+            if (state.selectedTask.id_task === tasks.id_task) {
+                state.selectedTask.subtasks = state.selectedTask.subtasks.filter((s) => 
+                    s.id_subtask !== id_subtask
+                );
+            }
+        }
+
 
             
     }
@@ -122,6 +171,9 @@ export const {
     deleteTask,
     editDescription,
     editTitle,
+    addSubtask,
+    updateCheckbox,
+    deleteSubtask
 } = boardSlice.actions;
 export default boardSlice.reducer;
 
