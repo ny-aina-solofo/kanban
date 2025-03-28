@@ -8,6 +8,7 @@ import EditDescription from "../Input/Task/EditDescription";
 import { openInput } from "../../redux/inputSlice";
 import EditTitle from "../Input/Task/EditTitle";
 import { setSelectedTask } from "../../redux/boardSlice";
+import ChangeTaskStatus from "../Modal/Task/ChangeTaskStatus";
 
 
 const ViewTask = ()=> {
@@ -19,7 +20,8 @@ const ViewTask = ()=> {
     const deleteTaskModal = useSelector((state) => state.modal.deleteTaskModal);
     const editDescription = useSelector((state)=>state.input.editDescription);
     const editTitle = useSelector((state)=>state.input.editTitle);
-    
+    const changeTaskStatus = useSelector((state) => state.modal.changeTaskStatus);
+
     useEffect(() => {
         if (!selectedTask?.id_task) {
             const savedTask = localStorage.getItem("selectedTask");
@@ -70,6 +72,7 @@ const ViewTask = ()=> {
                 </main>
             </div>
             {deleteTaskModal.open && <DeleteTaskModal/>}
+            {changeTaskStatus.open && <ChangeTaskStatus/>}
         </div>
     );
 }

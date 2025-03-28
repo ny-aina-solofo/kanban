@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setSelectedTask } from "../../redux/boardSlice";
 import { openInput } from "../../redux/inputSlice";
 
-const DropdownTask = ({tasks}) => {
+const DropdownTask = () => {
     const dispatch = useDispatch();
     const selectedTask = useSelector((state) => state.boards.selectedTask);
     
@@ -17,12 +17,6 @@ const DropdownTask = ({tasks}) => {
                 </i>
                 <ul className="dropdown-menu" >
                     <li 
-                        className="dropdown-item" type="button"
-                        onClick={() => dispatch(openInput("addSubtask"))} 
-                    >
-                    ajouter sous-tâches
-                    </li>
-                    <li 
                         className="dropdown-item " type="button" 
                         onClick={() =>{
                             dispatch(openModal("deleteTaskModal"));
@@ -30,6 +24,18 @@ const DropdownTask = ({tasks}) => {
                         }}
                     >
                     supprimer
+                    </li>
+                    <li 
+                        className="dropdown-item" type="button"
+                        onClick={() => dispatch(openInput("addSubtask"))} 
+                    >
+                    ajouter sous-tâches
+                    </li>
+                    <li 
+                        className="dropdown-item" type="button"
+                        onClick={() => dispatch(openModal("changeTaskStatus"))} 
+                    >
+                    basculer vers
                     </li>
                 </ul>
             </div>

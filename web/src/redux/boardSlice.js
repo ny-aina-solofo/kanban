@@ -106,6 +106,18 @@ const boardSlice = createSlice({
                 state.selectedTask.title = title;
             }
         },
+        changeTaskColumn: (state, action) => {
+            const { id_board, oldColumnId, newColumnId, id_task } = action.payload;
+            const board = state.boards.find((b) => b.id_board === id_board);
+            const oldColumn = board.column.find((c) => c.id_column === oldColumnId);
+            const newColumn = board.column.find((c) => c.id_column === newColumnId);
+            const task = oldColumn.tasks.find((t) => t.id_task === id_task);
+            oldColumn.tasks = oldColumn.tasks.filter((t) => t.id_task !== id_task);
+            task.id_column = newColumnId;
+            // Iterate through subtasks and change the columnID
+            // task.subtasks.forEach((s) => (s.columnID = newColumnID));
+            newColumn.tasks = [...(newColumn.tasks || []),task];
+        },
 
         // Subtask :
         addSubtask : (state, action) => {
@@ -152,10 +164,8 @@ const boardSlice = createSlice({
                     s.id_subtask !== id_subtask
                 );
             }
-        }
+        },
 
-
-            
     }
 })
 
@@ -173,7 +183,8 @@ export const {
     editTitle,
     addSubtask,
     updateCheckbox,
-    deleteSubtask
+    deleteSubtask,
+    changeTaskColumn,
 } = boardSlice.actions;
 export default boardSlice.reducer;
 

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteTask } from '../../../redux/boardSlice';
 import { useNavigate } from 'react-router';
 
-const DeleteTaskModal = ({}) => {
+const DeleteTaskModal = () => {
     const dispatch = useDispatch();
     const selectedTask = useSelector((state) => state.boards.selectedTask);    
     const activeBoardId = useSelector(state => state.boards.activeBoardId);
