@@ -1,5 +1,6 @@
 import { createSlice,nanoid } from "@reduxjs/toolkit";
 import boards from "../data.json";
+import { arrayMove } from "@dnd-kit/sortable";
 
 const initialState = {
     boards: boards.boards,
@@ -114,9 +115,17 @@ const boardSlice = createSlice({
             const task = oldColumn.tasks.find((t) => t.id_task === id_task);
             oldColumn.tasks = oldColumn.tasks.filter((t) => t.id_task !== id_task);
             task.id_column = newColumnId;
-            // Iterate through subtasks and change the columnID
-            // task.subtasks.forEach((s) => (s.columnID = newColumnID));
             newColumn.tasks = [...(newColumn.tasks || []),task];
+        },
+        reorderTask: (state,action) => {
+            const { id_board,id_column,active,over} = action.payload;
+            const board = state.boards.find((b) => b.id_board === id_board);
+            const column = board.column.find((col) => col.id_column === id_column);
+            const tasks = column?.tasks || [];
+            const getTaskPosition = (id) => tasks.findIndex(t => t.id_task === id);
+            const originalPosition = getTaskPosition(active);
+			const newPosition = getTaskPosition(over);
+            column.tasks = arrayMove(tasks, originalPosition,newPosition)
         },
 
         // Subtask :
@@ -185,6 +194,7 @@ export const {
     updateCheckbox,
     deleteSubtask,
     changeTaskColumn,
+    reorderTask,
 } = boardSlice.actions;
 export default boardSlice.reducer;
 

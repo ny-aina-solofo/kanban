@@ -1,54 +1,59 @@
-import React, { useState } from "react";
+import {
+    DndContext, KeyboardSensor, PointerSensor,TouchSensor,closestCorners,useSensor, useSensors,
+} from "@dnd-kit/core";
+import React, { useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Task from "../Task/Task";
-import TaskLength from "../Task/TaskLength";
-import { openInput } from "../../redux/inputSlice";
-import AddColumn from "../Input/Column/AddColumn";
+import { 
+    SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy 
+} from "@dnd-kit/sortable";
+import { reorderTask } from "../../redux/boardSlice";
 
 const Column = ({columns}) => {
     const dispatch = useDispatch();
-    const addColumn = useSelector((state)=>state.input.addColumn);
+    const tasks = columns?.tasks || []; 
+    const items = tasks.map((task) => task.id_task);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(TouchSensor),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    );
+
+    const handleDragEnd = (event) => {
+		const { active, over } = event;
+		if (!over || active.id === over.id) return;
+        dispatch(reorderTask({
+            id_board : columns.id_board,
+            id_column : columns.id_column,
+            active : active.id,
+            over : over.id, 
+        }));
+    }
+
     return (
-        <div>
-            <div style={{ paddingLeft:"300px",overflowX:"scroll"}}>
-                <div className="mt-4 d-flex flex-row">
-                    <div className="d-flex flex-row" id="kanban-column">
-                        {columns.map(col => (
-                            <div 
-                                key={col.id_column} 
-                                className="ms-3"
-                            >
-                                <div className="d-flex justify-content-between ">
-                                    <div className="d-flex flex-row ">
-                                        <p className="ms-3">{col.column_name}</p>
-                                        {/* <TaskLength tasks={col?.tasks || []}/> */}
-                                    </div>
-                                </div>
-                                <Task 
-                                    tasks={col?.tasks || []}
-                                />
-                            </div>
-                        ))}
-                        {addColumn.open && <AddColumn />}
-                    </div>
-                    <div>
-                        <div>
-                            <p>&nbsp;</p>
-                        </div>
-                        <div
-                            data-testid="add-column-button"
-                            className="bg-white border ms-3 rounded p-3" type="button" 
-                            onClick={()=>dispatch(openInput("addColumn"))}
-                            style={{width:"252px", height:"60px"}}
-                        >
-                            <div className="">
-                                <i className="bi bi-plus"></i>
-                                <span className="ms-3">New Column</span>
-                            </div>
-                        </div>
-                    </div>
+        <div className="ms-3 border p-3">
+            <div className="d-flex justify-content-between ">
+                <div className="d-flex flex-row ">
+                    <h6 className="ms-3">{columns.column_name}</h6>
                 </div>
             </div>
+            {tasks.length > 0 ?(
+                <DndContext  sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
+                    <SortableContext items={items}  strategy={verticalListSortingStrategy}>
+                        <div className="mt-3">
+                            {tasks.map((task) =>
+                                <Task 
+                                    key={task.id_task}
+                                    tasks={task}
+                                />
+                            )}
+                        </div>
+                    </SortableContext>
+                </DndContext>
+            ) : (
+                <div style={{ height: "100%", width: "250px" }}></div>
+            )}
         </div>
     )
 }

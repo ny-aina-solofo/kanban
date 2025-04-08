@@ -31,12 +31,6 @@ const DropdownTask = () => {
                     >
                     ajouter sous-tâches
                     </li>
-                    <li 
-                        className="dropdown-item" type="button"
-                        onClick={() => dispatch(openModal("changeTaskStatus"))} 
-                    >
-                    basculer vers
-                    </li>
                 </ul>
             </div>
         </div>

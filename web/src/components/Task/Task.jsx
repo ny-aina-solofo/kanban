@@ -1,41 +1,38 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import { setSelectedTask } from "../../redux/boardSlice";
 import ProgressBar from "../ProgressBar";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const Task = ({tasks}) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
+    const {attributes, listeners, setNodeRef, transform,transition} = useSortable({id: tasks.id_task});
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition: transition,
+    };
+
+    const viewTask = () =>{
+        dispatch(setSelectedTask(tasks));
+        navigate(`/view-task/${tasks.id_task}`);
+    }
     return (
-        <div>
-            {tasks.length > 0 ?(
-                <>
-                    {tasks.map((task) => (
-                        <Link 
-                            key={task.id_task}
-                            data-testid="view-task"
-                            to={`/view-task/${task.id_task}`}
-                            onClick={() => dispatch(setSelectedTask(task))} 
-                        >
-                            <div    
-                                className="d-flex flex-column mb-3"
-                                id="task-row" type="button"
-                            >
-                                <div
-                                    className="bg-white border rounded p-3"
-                                    style={{ height: "100%", width: "250px" }}
-                                >
-                                    <h6 className="fw-bolder">{task.title}</h6>
-                                    <ProgressBar subtasks={task?.subtasks || []} />
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
-                </>
-            ) : (
-                <div style={{ height: "100%", width: "250px" }}></div>
-            )}
+        <div ref={setNodeRef} style={style}  {...attributes} >
+            <div
+                data-testid="view-task"
+                className="bg-white border rounded p-3 mb-3"
+                type="button"
+                style={{ height: "100%", width: "250px" }}
+                onClick={viewTask}
+            >
+                <h6 className="fw-bolder" {...listeners}>{tasks.title}</h6>
+                <ProgressBar subtasks={tasks?.subtasks || []} />
+            </div>
         </div>
     )
 }

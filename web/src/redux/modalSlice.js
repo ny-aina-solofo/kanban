@@ -6,7 +6,6 @@ const initialState = {
     editBoardModal: { open : false },
     addTaskModal: { open: false },
     deleteTaskModal: { open: false },
-    changeTaskStatus: { open: false },
 };
 
 const modalSlice = createSlice({
