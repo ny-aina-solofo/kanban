@@ -42,6 +42,7 @@ const ChangeTaskStatus = () => {
             <button 
                 className="btn btn-primary mt-3" 
                 onClick={handleChange}
+                disabled={columns.length === 1}
             >
                 basculer
             </button>

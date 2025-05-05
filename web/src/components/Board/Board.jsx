@@ -35,11 +35,14 @@ const Board = () => {
                             <div> <p>&nbsp;</p> </div>
                             <div
                                 data-testid="add-column-button"
-                                className="bg-white border ms-3 rounded p-3" type="button" 
+                                className="bg-white ms-3 border rounded" type="button" 
                                 onClick={()=>dispatch(openInput("addColumn"))}
-                                style={{width:"252px", height:"60px"}}
+                                style={{width:"252px", height:"100%"}}
                             >
-                                <div className="">
+                                <div 
+                                    className="" 
+                                    style={{ position:"relative", top: "40%", left: "25%" }}
+                                >
                                     <i className="bi bi-plus"></i>
                                     <span className="ms-3">New Column</span>
                                 </div>

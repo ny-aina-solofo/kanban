@@ -4,7 +4,8 @@ import { arrayMove } from "@dnd-kit/sortable";
 
 const initialState = {
     boards: boards.boards,
-    activeBoardId : boards.boards[0].id_board,
+    activeBoardId : boards.boards[0]?.id_board || null,
+    // activeBoardId : null,
     selectedBoard : null,
     selectedTask : {},
 };
@@ -20,7 +21,7 @@ const boardSlice = createSlice({
             state.selectedBoard = action.payload;
         },
         addBoard : (state, action) => {
-            const newID = nanoid();
+            const newID = Date.now();
             const boardName = action.payload;
             const newBoard = {
                 id_board:newID,
@@ -32,8 +33,14 @@ const boardSlice = createSlice({
         },
         deleteBoard : (state, action) => {
             const id_board = action.payload;
-            state.boards = state.boards.filter((board) => board.id_board !== id_board);
-            state.activeBoardId = initialState.activeBoardId;
+            const updatedBoard = state.boards.filter((board) => board.id_board !== id_board);
+            state.boards =  updatedBoard;
+            if (updatedBoard.length > 0) {
+                const firstBoardId = updatedBoard[0].id_board;
+                state.activeBoardId = firstBoardId;     
+            } else {
+                state.activeBoardId = null;
+            }
         },
         editBoard : (state, action) => {
             const { id_board, boardName, columns } = action.payload;
@@ -47,7 +54,7 @@ const boardSlice = createSlice({
         // Column :
         addColumn : (state, action) => {
             const {id_board,columnName} = action.payload;
-            const newID = nanoid();
+            const newID = Date.now();
             const board = state.boards.find((board) => board.id_board === id_board);
             // console.log(id_board,columnName);
             const column = board?.column || [];

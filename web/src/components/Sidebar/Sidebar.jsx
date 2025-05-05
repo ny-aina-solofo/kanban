@@ -15,12 +15,13 @@ const Sidebar = () => {
                 style={{ width: "300px" }}
             >
                 <div className="h-100 ">
-                    <div className="p-4">
-                        <div className="mb-2 d-flex justify-content-between">
-                            <span className="">Your Board</span>
+                    <div className="ms-4 mt-3 mb-4">KANBAN-APP</div>
+                    <div className="">
+                        <div className="mt-3 mb-2 p-2 d-flex flex-row justify-content-between">
+                            <span className="ms-4">Your Board</span>
                             <span
                                 data-testid="add-board" 
-                                className=""
+                                className="mx-3"
                                 type="button" 
                                 onClick={() => dispatch(openModal("addBoardModal"))}
                             >
@@ -30,14 +31,23 @@ const Sidebar = () => {
                         {boards.map(board => (
                             <div 
                                 key={board.id_board} 
-                                className="mb-2 d-flex justify-content-between"
+                                // className="mb-2 border "
+                                className={`mb-2 p-2 ${board.id_board === activeBoardId ? 
+                                    "bg-primary text-white" 
+                                    : 
+                                    ""
+                                }`}     
                             >
                                 <div
                                     data-testid="board-list"
-                                    className={`text-dark ${board.id_board === activeBoardId ? "fw-bold" : ""}`}     
+                                    // className={`${board.id_board === activeBoardId ? 
+                                    //     "fw-bold" 
+                                    //     : 
+                                    //     ""
+                                    // }`}     
                                     onClick={() => dispatch(setActiveBoard(board.id_board)) }
                                 >
-                                    <span className="ms-3" type = "button">{board.board_name}</span>
+                                    <span className="ms-4" type = "button">{board.board_name}</span>
                                 </div>
                             </div>
                         ))}                        

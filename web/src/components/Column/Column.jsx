@@ -32,7 +32,7 @@ const Column = ({columns}) => {
     }
 
     return (
-        <div className="ms-3 border p-3">
+        <div className="ms-3">
             <div className="d-flex justify-content-between ">
                 <div className="d-flex flex-row ">
                     <h6 className="ms-3">{columns.column_name}</h6>

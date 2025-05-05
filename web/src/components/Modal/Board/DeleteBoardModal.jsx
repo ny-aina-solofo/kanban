@@ -12,7 +12,7 @@ const DeleteBoardModal = ({}) => {
     const handleDeleteBoard = (id_board)=>{
         dispatch(deleteBoard(id_board));
         dispatch(closeModal());
-        console.log(id_board);
+        // console.log(id_board);
     }
     return (
         <div>

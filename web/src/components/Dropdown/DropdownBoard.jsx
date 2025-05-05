@@ -9,7 +9,7 @@ const DropdownBoard = ({board}) => {
         <div>
             <div className="dropdown">
                 <i 
-                    className="bi bi-three-dots mx-2" type="button" 
+                    className="bi bi-three-dots-vertical ms-3" type="button" 
                     data-bs-toggle="dropdown" aria-expanded="false"
                 >
                 </i>

@@ -45,7 +45,7 @@ const ViewTask = ()=> {
                     <span className="ms-3">Retour</span>
                 </div>
 
-                <div className="border rounded p-3">
+                <div className=" bg-white border rounded p-3">
                     <header className="mb-4">
                         {editTitle.open ? (
                             <EditTitle/>

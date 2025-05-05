@@ -10,7 +10,7 @@ const EditDescription = () => {
     const [inputValue,setInputValue] = useState(selectedTask.description);
 
     const handleEdit = ()=>{
-        if (!inputValue) return;
+        // if (!inputValue) return;
         dispatch(editDescription({
             description : inputValue,
             task : selectedTask,

@@ -10,7 +10,7 @@ const EditTitle = () => {
     const [inputValue,setInputValue] = useState(selectedTask.title);
     
     const handleEdit = ()=>{
-        if (!inputValue) return;
+        // if (!inputValue) return;
         dispatch(editTitle({
             title : inputValue,
             task : selectedTask,
