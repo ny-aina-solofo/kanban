@@ -1,3 +1,5 @@
+"use client"
+
 import {
     DndContext, KeyboardSensor, PointerSensor,TouchSensor,closestCorners,useSensor, useSensors,
 } from "@dnd-kit/core";
@@ -9,10 +11,26 @@ import {
 } from "@dnd-kit/sortable";
 import { reorderTask } from "../../redux/boardSlice";
 
-const Column = ({columns}) => {
+interface TaskType {
+    id_task: number;
+    [key: string]: any;
+}
+
+interface ColumnType {
+    id_column: number;
+    id_board: number;
+    column_name: string;
+    tasks: TaskType[];
+}
+
+interface ColumnProps {
+      columns: ColumnType;
+}
+
+const Column = ({columns}:ColumnProps) => {
     const dispatch = useDispatch();
     const tasks = columns?.tasks || []; 
-    const items = tasks.map((task) => task.id_task);
+    const items = tasks.map((task:any) => task.id_task);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -20,7 +38,7 @@ const Column = ({columns}) => {
         useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
     );
 
-    const handleDragEnd = (event) => {
+    const handleDragEnd = (event:any) => {
 		const { active, over } = event;
 		if (!over || active.id === over.id) return;
         dispatch(reorderTask({
@@ -32,10 +50,12 @@ const Column = ({columns}) => {
     }
 
     return (
-        <div className="ms-3">
-            <div className="d-flex justify-content-between ">
+        <div className="ms-4 mt-3">
+            <div className="d-flex justify-content-between pb-2 border border-3 
+                 border-top-0 border-start-0 border-end-0">
                 <div className="d-flex flex-row ">
-                    <h6 className="ms-3">{columns.column_name}</h6>
+                    <h6 className="fw-bold text-secondary">{columns.column_name}</h6>
+                    <span className="ms-3 badge bg-white text-dark">{tasks.length}</span>
                 </div>
             </div>
             {tasks.length > 0 ?(

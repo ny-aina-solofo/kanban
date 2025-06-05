@@ -3,26 +3,28 @@ import { useSelector, useDispatch } from "react-redux";
 import DropdownBoard from "../Dropdown/DropdownBoard";
 import { openModal } from '../../redux/modalSlice';
 import AddTaskModal from '../Modal/Task/AddTaskModal';
+import SearchBar from '../SearchBar/SearchBar';
 
 
 const Navbar = () => {
     const dispatch = useDispatch();
-    const boards = useSelector((state) => state.boards.boards);
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
-    const activeBoard = boards.find(board => board.id_board === activeBoardId) || [];
-    const addTaskModal = useSelector((state) => state.modal.addTaskModal);
+    const boards = useSelector((state:any) => state.boards.boards);
+    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    const activeBoard = boards.find((board:any) => board.id_board === activeBoardId) || [];
+    const addTaskModal = useSelector((state:any) => state.modal.addTaskModal);
     
     return(
         <div>
             <div 
-                className="sticky-top bg-white border border-top-0 border-start-0 border-end-0 "
+                className="border-none"
                 style={{paddingLeft:"300px"}} 
             >
                 <div className="d-flex justify-content-between p-3">
                     <h5 className='fw-bolder'>{activeBoard?.board_name || 'Empty Board'}</h5>
                     <div className="d-flex">
+                        <SearchBar/>                        
                         <button 
-                            className="btn btn-primary rounded-pill" type="button"
+                            className="btn btn-primary" type="button"
                             onClick={()=>{
                                 dispatch(openModal("addTaskModal"));
                             }}

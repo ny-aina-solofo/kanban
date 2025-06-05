@@ -10,23 +10,23 @@ import { openInput } from "../../redux/inputSlice";
 
 const Board = () => {
     const dispatch = useDispatch();
-    const boards = useSelector((state) => state.boards.boards);
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
-    const activeBoard = boards.find(board => board.id_board === activeBoardId);
+    const boards = useSelector((state:any) => state.boards.boards);
+    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    const activeBoard = boards.find((board:any) => board.id_board === activeBoardId);
     const columns = activeBoard?.column || [];
-    const addBoardModal = useSelector((state) => state.modal.addBoardModal);
-    const deleteBoardModal = useSelector((state) => state.modal.deleteBoardModal);
-    const editBoardModal = useSelector((state) => state.modal.editBoardModal);
-    const addColumn = useSelector((state)=>state.input.addColumn);
+    const addBoardModal = useSelector((state:any) => state.modal.addBoardModal);
+    const deleteBoardModal = useSelector((state:any) => state.modal.deleteBoardModal);
+    const editBoardModal = useSelector((state:any) => state.modal.editBoardModal);
+    const addColumn = useSelector((state:any)=>state.input.addColumn);
 
     return (
         <main>
             <Navbar/>
             {activeBoard ? (
-                <section style={{ paddingLeft:"300px",overflowX:"scroll"}}>
+                <section style={{ paddingLeft:"300px"}}>
                     <div className="mt-4 d-flex flex-row">
                         <section className="d-flex flex-row" id="kanban-column">
-                            {columns.map((col) => (
+                            {columns.map((col:any) => (
                                 <Column key={col.id_column} columns={col} />
                             ))}                       
                             {addColumn.open && <AddColumn />}
@@ -35,9 +35,9 @@ const Board = () => {
                             <div> <p>&nbsp;</p> </div>
                             <div
                                 data-testid="add-column-button"
-                                className="bg-white ms-3 border rounded" type="button" 
+                                className="bg-white ms-3 mt-5 rounded" 
                                 onClick={()=>dispatch(openInput("addColumn"))}
-                                style={{width:"252px", height:"100%"}}
+                                style={{width:"252px", height:"100%",cursor:"pointer"}}
                             >
                                 <div 
                                     className="" 

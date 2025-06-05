@@ -1,10 +1,16 @@
-import { useState,useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
-const EditColumn = ({columns,setColumns}) => {
-    const editColumn = (index,value)=>{
-        let newArray = [];
-        columns.forEach((col,i) => {
+interface ColumnProps {
+    columns: any;
+    setColumns:(columns:any)=>void;
+}
+
+
+const EditColumn = ({columns,setColumns}:ColumnProps) => {
+    const editColumn = (index:number,value:string)=>{
+        let newArray:any = [];
+        columns.forEach((col:any,i:number) => {
             if (i === index) {
                 newArray.push({...col,column_name : value});
             } else {
@@ -14,15 +20,15 @@ const EditColumn = ({columns,setColumns}) => {
         setColumns(newArray);
     }
     
-    const deleteColumn = (id_column)=>{
-        setColumns(columns.filter(col => col.id_column !== id_column));
+    const deleteColumn = (id_column:number)=>{
+        setColumns(columns.filter((col:any) => col.id_column !== id_column));
     }
     
     return(
         <div>
             {columns.length > 0 ? (
                 <div className="">
-                    {columns.map((col,index) => (
+                    {columns.map((col:any,index:number) => (
                         <div 
                             key={col.id_column} 
                             className='mb-3'

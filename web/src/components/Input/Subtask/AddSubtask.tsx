@@ -6,8 +6,8 @@ import { addSubtask } from '../../../redux/boardSlice';
 const AddSubtask = () => {
     const dispatch = useDispatch();
     const [inputValue,setInputValue] = useState('');
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
-    const selectedTask = useSelector((state) => state.boards.selectedTask);
+    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    const selectedTask = useSelector((state:any) => state.boards.selectedTask);
     
     const handleAddSubtask = ()=>{
         if (!inputValue) return;

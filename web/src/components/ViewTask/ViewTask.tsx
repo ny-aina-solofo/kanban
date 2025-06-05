@@ -14,16 +14,16 @@ const ViewTask = ()=> {
     // const { id_task } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const boards = useSelector((state) => state.boards.boards);
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
-    const activeBoard = boards.find(board => board.id_board === activeBoardId);
-    const selectedTask = useSelector((state) => state.boards.selectedTask);
+    const boards = useSelector((state:any) => state.boards.boards);
+    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    const activeBoard = boards.find((board:any) => board.id_board === activeBoardId);
+    const selectedTask = useSelector((state:any) => state.boards.selectedTask);
     const columns = activeBoard?.column || [] ;
-    const column_name = columns.find(col => col.id_column === selectedTask.id_column)?.column_name || '';
+    const column_name = columns.find((col:any) => col.id_column === selectedTask.id_column)?.column_name || '';
 
-    const deleteTaskModal = useSelector((state) => state.modal.deleteTaskModal);
-    const editDescription = useSelector((state)=>state.input.editDescription);
-    const editTitle = useSelector((state)=>state.input.editTitle);
+    const deleteTaskModal = useSelector((state:any) => state.modal.deleteTaskModal);
+    const editDescription = useSelector((state:any)=>state.input.editDescription);
+    const editTitle = useSelector((state:any)=>state.input.editTitle);
 
     useEffect(() => {
         if (!selectedTask?.id_task) {
@@ -38,7 +38,8 @@ const ViewTask = ()=> {
         <div style={{ width: "150vh", paddingLeft:"300px" }}>
             <div className="ms-5">
                 <div 
-                    className="mb-4 mt-3" type="button"
+                    className="mb-4 mt-3"
+                    style={{cursor:"pointer"}}
                     onClick={() => navigate(-1)}
                 >
                     <i className="bi bi-chevron-compact-left"></i>
@@ -51,7 +52,8 @@ const ViewTask = ()=> {
                             <EditTitle/>
                         ) : (
                             <h5 
-                                className="mt-2 fw-bold" type="button"
+                                className="mt-2 fw-bold"
+                                style={{cursor:"pointer"}}
                                 onClick={() => dispatch(openInput("editTitle"))}
                             >
                                 {selectedTask.title}
@@ -65,7 +67,8 @@ const ViewTask = ()=> {
                             <div className="dropdown">
                                 <div 
                                     className="ms-2 border rounded p-1" 
-                                    type="button" 
+                                
+                                    style={{cursor:"pointer"}}
                                     data-bs-toggle="dropdown" aria-expanded="false"
                                 >
                                     <span>{column_name}</span>
@@ -86,7 +89,8 @@ const ViewTask = ()=> {
                                 {editDescription.open ? (
                                     <EditDescription/>
                                 ) : (
-                                    <p type="button" onClick={() => dispatch(openInput("editDescription"))}>
+                                    <p
+                                    style={{cursor:"pointer"}} onClick={() => dispatch(openInput("editDescription"))}>
                                         {selectedTask?.description || "No description"}
                                     </p>
                                 )}
@@ -97,7 +101,8 @@ const ViewTask = ()=> {
                         </section>
                         <section className="ms-3 d-flex flex-column">
                             <button 
-                                className="border rounded" type="button" 
+                                className="border rounded"
+                                style={{cursor:"pointer"}} 
                                 onClick={() =>{
                                     dispatch(openModal("deleteTaskModal"));
                                     dispatch(setSelectedTask(selectedTask));
@@ -106,7 +111,8 @@ const ViewTask = ()=> {
                                 supprimer
                             </button>
                             <button 
-                                className="border rounded mt-2" type="button"
+                                className="border rounded mt-2"
+                                style={{cursor:"pointer"}}
                                 onClick={() => dispatch(openInput("addSubtask"))} 
                             >
                                 ajouter sous-tâches

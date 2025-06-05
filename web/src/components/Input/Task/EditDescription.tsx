@@ -5,8 +5,8 @@ import { editDescription } from '../../../redux/boardSlice';
 
 const EditDescription = () => {
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state) => state.boards.selectedTask);    
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+    const selectedTask = useSelector((state:any) => state.boards.selectedTask);    
+    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
     const [inputValue,setInputValue] = useState(selectedTask.description);
 
     const handleEdit = ()=>{
@@ -23,7 +23,7 @@ const EditDescription = () => {
         <div className='' >
             <div>
                 <textarea 
-                    type="text" className="form-control" name="" id="" 
+                    className="form-control" name="" id="" 
                     aria-describedby="helpId" placeholder="Entrez un description"
                     value={inputValue} onChange={(e)=>setInputValue(e.target.value)}
                 />

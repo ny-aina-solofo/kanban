@@ -1,27 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+interface Modal {
+  open: boolean;
+}
+  
+interface ModalState {
+    addBoardModal: Modal,
+    deleteBoardModal: Modal,
+    editBoardModal: Modal,
+    addTaskModal: Modal,
+    deleteTaskModal: Modal,
+}
+  
+const initialState : ModalState= {
     addBoardModal: { open: false },
     deleteBoardModal: { open: false },
     editBoardModal: { open : false },
     addTaskModal: { open: false },
     deleteTaskModal: { open: false },
 };
+type ModalKey = keyof ModalState;
 
 const modalSlice = createSlice({
     name : "modal", 
     initialState : initialState, 
     reducers : {
-        openModal: (state, action) => {
+        openModal: (state, action:PayloadAction<ModalKey>) => {
             // Close all modals and open the one that was clicked
             for (const modal in state) {
-              state[modal].open = false;
+              state[modal as ModalKey].open = false;
             }
             state[action.payload].open = true;
         },
         closeModal: (state, action) => {
             for (const modal in state) {
-                state[modal].open = false;
+                state[modal as ModalKey].open = false;
                 // If they have a second property, set it to null / 0
                 //   if (state[modal].task) {
                 //     state[modal].task = null;

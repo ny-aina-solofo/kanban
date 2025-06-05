@@ -1,7 +1,7 @@
 import { cleanup, render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { beforeEach, expect, it, vi, describe, afterEach } from "vitest";
 import React from "react";
-import Board from "../Board/Board";
+import Board from "./Board";
 import { Provider } from "react-redux";
 import { store } from "../../redux/store";
 import { BrowserRouter } from "react-router";
@@ -33,9 +33,9 @@ describe("Board Component", () => {
         expect(store.getState().input.addColumn).toBeDefined();
     });
     it("Should open input on click add column button ", () => {
-        render(<MockColumn/>);
+        render(<MockBoard/>);
         const { store, invoke } = create();
-        invoke((dispatch, getState) => {
+        invoke((dispatch:any, getState: () => void) => {
             dispatch(openInput("addColumn"))
             getState()
         })

@@ -5,8 +5,8 @@ import { editTitle } from '../../../redux/boardSlice';
 
 const EditTitle = () => {
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state) => state.boards.selectedTask);    
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+    const selectedTask = useSelector((state:any) => state.boards.selectedTask);    
+    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
     const [inputValue,setInputValue] = useState(selectedTask.title);
     
     const handleEdit = ()=>{

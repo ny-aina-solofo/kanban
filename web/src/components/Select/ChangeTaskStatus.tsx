@@ -5,10 +5,10 @@ import { changeTaskColumn } from '../../redux/boardSlice';
 
 const ChangeTaskStatus = () => {
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state) => state.boards.selectedTask);    
-    const boards = useSelector((state) => state.boards.boards);
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
-    const activeBoard = boards.find(board => board.id_board === activeBoardId);
+    const selectedTask = useSelector((state:any) => state.boards.selectedTask);    
+    const boards = useSelector((state:any) => state.boards.boards);
+    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    const activeBoard = boards.find((board:any) => board.id_board === activeBoardId);
     const columns = activeBoard?.column || [] ;
     const navigate = useNavigate();
     
@@ -32,7 +32,7 @@ const ChangeTaskStatus = () => {
                     value={status} 
                     onChange={(e) => setStatus(e.target.value)}
                 >
-                    {columns.map(col => (
+                    {columns.map((col:any)=> (
                         <option key={col.id_column} value={col.id_column}>
                             {col.column_name}
                         </option>

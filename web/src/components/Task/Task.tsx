@@ -6,7 +6,12 @@ import ProgressBar from "../ProgressBar";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const Task = ({tasks}) => {
+interface TaskProps {
+    tasks: any;
+}
+
+
+const Task = ({tasks}:TaskProps) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -25,12 +30,12 @@ const Task = ({tasks}) => {
         <div ref={setNodeRef} style={style}  {...attributes} >
             <div
                 data-testid="view-task"
-                className="bg-white border rounded p-3 mb-3"
-                type="button"
-                style={{ height: "100%", width: "250px" }}
+                className="bg-white rounded p-3 mb-3 shadow-sm"
+                style={{ height: "100%", width: "250px",cursor:"pointer" }}
                 onClick={viewTask}
             >
                 <h6 className="fw-bolder" {...listeners}>{tasks.title}</h6>
+                {/* <p>{tasks.description}</p> */}
                 <ProgressBar subtasks={tasks?.subtasks || []} />
             </div>
         </div>

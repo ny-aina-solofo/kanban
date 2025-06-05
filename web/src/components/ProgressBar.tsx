@@ -1,12 +1,16 @@
 import React,{ useState ,useLayoutEffect } from 'react'
 
-const ProgressBar = ({subtasks}) => {
+interface ProgressBarProps {
+    subtasks:any;
+} 
+
+const ProgressBar = ({subtasks}:ProgressBarProps) => {
     const [count,setCount] = useState(0);
     const [subtask, setSubtask] = useState([]);
     
     useLayoutEffect(() => {
         setSubtask(subtasks);
-        const initialCount = subtasks.filter((sub) => sub.done).length; 
+        const initialCount = subtasks.filter((sub:any) => sub.done).length; 
         setCount(initialCount);
     }, [subtasks]);
 
@@ -16,8 +20,7 @@ const ProgressBar = ({subtasks}) => {
     return(
         <div>
             <div 
-                className="progress mt-3" role="progressbar" aria-label="Example 10px high" aria-valuenow="25" 
-                aria-valuemin="0" aria-valuemax="100" style={{height:'5px'}}   
+                className="progress mt-3" role="progressbar"  style={{height:'5px'}}   
                 >
                 <div className="progress-bar" style={{width: `${progressValue}` + '%'}}></div>
             </div>

@@ -6,7 +6,7 @@ import { addColumn } from '../../../redux/boardSlice';
 const AddColumn = () => {
     const [inputValue,setInputValue] = useState('');
     const dispatch = useDispatch();
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
+    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
    
     const handleAddColumn = ()=>{
         if (!inputValue) return;

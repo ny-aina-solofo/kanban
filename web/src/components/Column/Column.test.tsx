@@ -1,10 +1,24 @@
 import { cleanup, render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { beforeEach, expect, it, vi, describe, afterEach } from "vitest";
 import React from "react";
-import Column from "../Column/Column";
+import Column from "./Column";
 import { Provider } from "react-redux";
 import { store } from "../../redux/store";
 import { BrowserRouter } from "react-router";
+
+interface ColumnType {
+    id_column: number;
+    id_board: number;
+    column_name: string;
+    tasks: any[];
+}
+  
+const mockColumn: ColumnType = {
+    id_column: 17,
+    id_board: 11,
+    column_name: "todo",
+    tasks: [],
+};
 
 const columns = [
     {id_column:17,column_name:"todo",id_board:11,tasks:[]},
@@ -16,7 +30,7 @@ const MockColumn = () => {
     return (
     <Provider store={store}>
         <BrowserRouter>    
-           <Column columns={columns}/>
+           <Column columns={mockColumn}/>
         </BrowserRouter>
     </Provider>
     );
@@ -29,5 +43,5 @@ describe("Column component tests", () => {
         render(<MockColumn/>)
         expect(columns.map(item => item.column_name)).toEqual(['todo', 'progress']);    
     });
-
+    
 });

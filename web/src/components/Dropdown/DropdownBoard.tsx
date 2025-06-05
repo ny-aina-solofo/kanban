@@ -3,19 +3,32 @@ import { useSelector, useDispatch } from "react-redux";
 import { setSelectedBoard } from "../../redux/boardSlice";
 import React from "react";
 
-const DropdownBoard = ({board}) => {
+interface BoardType {
+    id_board: number;
+    board_name: string;
+    column: any[];
+}
+
+interface BoardProps {
+    board: BoardType;
+}
+
+
+const DropdownBoard = ({board}:BoardProps) => {
     const dispatch = useDispatch();
     return (
         <div>
             <div className="dropdown">
-                <i 
-                    className="bi bi-three-dots-vertical ms-3" type="button" 
+                <div
+                    className="ms-3 p-2 " style={{fontSize:"20px", cursor:"pointer"}} 
                     data-bs-toggle="dropdown" aria-expanded="false"
                 >
-                </i>
+                    <i className="bi bi-three-dots"></i>
+                </div>
                 <ul className="dropdown-menu" >
                     <li 
-                        className="dropdown-item" type="button"
+                        className="dropdown-item"
+                        style={{cursor:"pointer"}} 
                         onClick={() =>{
                             dispatch(openModal("editBoardModal"));
                             dispatch(setSelectedBoard(board));
@@ -24,7 +37,8 @@ const DropdownBoard = ({board}) => {
                     modifier tableau
                     </li>
                     <li 
-                        className="dropdown-item " type="button" 
+                        className="dropdown-item "
+                        style={{cursor:"pointer"}}  
                         onClick={() =>{
                             dispatch(openModal("deleteBoardModal"));
                             dispatch(setSelectedBoard(board));
