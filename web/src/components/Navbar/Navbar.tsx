@@ -22,7 +22,7 @@ const Navbar = () => {
                 <div className="d-flex justify-content-between p-3">
                     <h5 className='fw-bolder'>{activeBoard?.board_name || 'Empty Board'}</h5>
                     <div className="d-flex">
-                        <SearchBar/>                        
+                        {/* <SearchBar/>                         */}
                         <button 
                             className="btn btn-primary" type="button"
                             onClick={()=>{
