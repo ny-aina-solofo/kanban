@@ -3,20 +3,22 @@ import Modal from 'react-bootstrap/Modal';
 import { closeModal, openModal } from '../../../redux/modalSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { addTask } from '../../../redux/boardSlice';
+import { RootState } from '@/redux/store';
+import { BoardType, ColumnType, SubtaskType } from '@/types';
 
 const AddTaskModal = () => {
     const dispatch = useDispatch();
-    const boards = useSelector((state) => state.boards.boards);
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
-    const activeBoard = boards.find(board => board.id_board === activeBoardId);
-    
-    // const selectedBoard = useSelector((state) => state.boards.selectedBoard);    
+    const boards = useSelector((state:RootState) => state.boards.boards);
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
+    const activeBoard = boards.find((board:BoardType) => board.id_board === activeBoardId);
+      
     const [taskName,setTaskName] = useState('');
     const [description,setDescription] = useState('');
-    const [subtasks, setSubtasks] = useState([]);
+    const [subtasks, setSubtasks] = useState<string[]>([]);
     const columns = activeBoard?.column || [] ;
-    const [status, setStatus] = useState(columns.length > 0 ? columns[0].id_column : '');
-    
+    const [status, setStatus] = useState(columns.length > 0 ? columns[0].id_column : '');    
+    const showTaskModal = useSelector((state:RootState) => state.modal.addTaskModal);
+
     const handleAddTask = ()=>{
         // console.log(taskName,description,status,subtasks,activeBoardId);        
         dispatch(addTask({
@@ -24,30 +26,30 @@ const AddTaskModal = () => {
             description,
             id_column : parseInt(status),
             subtasks,
-            id_board : activeBoardId 
+            id_board : activeBoardId
         }));
         setTaskName('');
         setDescription('');
-        dispatch(closeModal());
+        dispatch(closeModal('addTaskModal'));
     }
 
-    const editSubtask = (index,value)=>{
+    const editSubtask = (index:number,value:any)=>{
         const newSubtasks = [...subtasks];
         newSubtasks[index] = value;
         setSubtasks(newSubtasks);
     }
     
-    const deleteSubtask = (id_subtask)=>{
-        setSubtasks(subtasks.filter(sub => sub.id_subtask !== id_subtask));
+    const deleteSubtask = (id_subtask:number)=>{
+        setSubtasks(subtasks.filter((sub:any) => sub.id_subtask !== id_subtask));
     }
     
     return(
         <div>
-            <Modal show={openModal} onHide={closeModal} backdrop="static" keyboard={false}>
+            <Modal show={showTaskModal.open} onHide={()=>dispatch(closeModal('addTaskModal'))} backdrop="static" keyboard={false}>
                 <Modal.Header >
                     <Modal.Title className='fw-bold'>Ajoutez une tâche</Modal.Title>
                     <button className="btn-close" type="button" onClick={()=>{
-                        dispatch(closeModal());setTaskName('');setDescription('');
+                        dispatch(closeModal('addTaskModal'));setTaskName('');setDescription('');
                     }}> 
                     </button>
                 </Modal.Header>
@@ -63,7 +65,7 @@ const AddTaskModal = () => {
                     <div className="mb-4">
                         <label className="form-label">Description</label>
                         <textarea 
-                            type="text" className="form-control" name="" id="" 
+                            className="form-control" name="" id="" 
                             aria-describedby="helpId" placeholder="Entrez un description"
                             value={description} onChange={(e)=>setDescription(e.target.value)}
                         />
@@ -75,7 +77,7 @@ const AddTaskModal = () => {
                             value={status} 
                             onChange={(e) => setStatus(e.target.value)}
                         >
-                            {columns.map(col => (
+                            {columns.map((col:ColumnType) => (
                                 <option key={col.id_column} value={col.id_column}>
                                     {col.column_name}
                                 </option>
@@ -84,7 +86,7 @@ const AddTaskModal = () => {
                     </div>
                     <div className='mb-4'>
                         <label className='form-label'>Ajouter des tâches secondaires</label>     
-                        {subtasks.map((sub,index) => (
+                        {subtasks.map((sub:any,index:number) => (
                             <div 
                                 key={index} 
                                 className='mb-3'
@@ -108,7 +110,7 @@ const AddTaskModal = () => {
                             </div>
                         ))}
                         <div 
-                            type='button'
+                            style={{cursor:"pointer"}}
                             className='mt-2' 
                             onClick={(e) => {
                                 e.preventDefault();

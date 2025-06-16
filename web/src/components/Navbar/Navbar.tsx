@@ -4,14 +4,16 @@ import DropdownBoard from "../Dropdown/DropdownBoard";
 import { openModal } from '../../redux/modalSlice';
 import AddTaskModal from '../Modal/Task/AddTaskModal';
 import SearchBar from '../SearchBar/SearchBar';
+import { RootState } from '@/redux/store';
+import { BoardType } from '@/types';
 
 
 const Navbar = () => {
     const dispatch = useDispatch();
-    const boards = useSelector((state:any) => state.boards.boards);
-    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
-    const activeBoard = boards.find((board:any) => board.id_board === activeBoardId) || [];
-    const addTaskModal = useSelector((state:any) => state.modal.addTaskModal);
+    const boards = useSelector((state:RootState) => state.boards.boards);
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
+    const activeBoard = boards.find((board:BoardType) => board.id_board === activeBoardId) || [];
+    const addTaskModal = useSelector((state:RootState) => state.modal.addTaskModal);
     
     return(
         <div>

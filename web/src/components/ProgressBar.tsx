@@ -1,7 +1,8 @@
+import { SubtaskType } from '@/types';
 import React,{ useState ,useLayoutEffect } from 'react'
 
 interface ProgressBarProps {
-    subtasks:any;
+    subtasks:[];
 } 
 
 const ProgressBar = ({subtasks}:ProgressBarProps) => {
@@ -10,7 +11,7 @@ const ProgressBar = ({subtasks}:ProgressBarProps) => {
     
     useLayoutEffect(() => {
         setSubtask(subtasks);
-        const initialCount = subtasks.filter((sub:any) => sub.done).length; 
+        const initialCount = subtasks.filter((sub:SubtaskType) => sub.done).length; 
         setCount(initialCount);
     }, [subtasks]);
 

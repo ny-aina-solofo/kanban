@@ -1,16 +1,5 @@
+import { ModalState,ModalKey } from "@/types/modal";
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
-
-interface Modal {
-  open: boolean;
-}
-  
-interface ModalState {
-    addBoardModal: Modal,
-    deleteBoardModal: Modal,
-    editBoardModal: Modal,
-    addTaskModal: Modal,
-    deleteTaskModal: Modal,
-}
   
 const initialState : ModalState= {
     addBoardModal: { open: false },
@@ -19,7 +8,6 @@ const initialState : ModalState= {
     addTaskModal: { open: false },
     deleteTaskModal: { open: false },
 };
-type ModalKey = keyof ModalState;
 
 const modalSlice = createSlice({
     name : "modal", 

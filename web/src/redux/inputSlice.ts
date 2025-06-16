@@ -1,15 +1,5 @@
+import { InputKey, InputState } from "@/types/input";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Input {
-  open: boolean;
-}
-
-interface InputState {
-  addColumn: Input;
-  editDescription: Input;
-  editTitle: Input;
-  addSubtask: Input;
-}
 
 const initialState: InputState = {
   addColumn: { open: false },
@@ -18,7 +8,6 @@ const initialState: InputState = {
   addSubtask: { open: false },
 };
 
-type InputKey = keyof InputState;
 
 const inputSlice = createSlice({
   name: "input",

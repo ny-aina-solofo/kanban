@@ -2,11 +2,12 @@ import React,{ useState ,useLayoutEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeInput } from "../../../redux/inputSlice";
 import { editDescription } from '../../../redux/boardSlice';
+import { RootState } from '@/redux/store';
 
 const EditDescription = () => {
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state:any) => state.boards.selectedTask);    
-    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    const selectedTask = useSelector((state:RootState) => state.boards.selectedTask);    
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
     const [inputValue,setInputValue] = useState(selectedTask.description);
 
     const handleEdit = ()=>{

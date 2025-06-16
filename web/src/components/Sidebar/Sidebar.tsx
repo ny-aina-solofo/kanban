@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveBoard } from "../../redux/boardSlice";
 import { openModal } from "../../redux/modalSlice";
+import { RootState } from "@/redux/store";
 
 const Sidebar = () => {
     const dispatch = useDispatch();
-    const boards = useSelector ((state:any) => state.boards.boards);
-    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    const boards = useSelector ((state:RootState) => state.boards.boards);
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
     
     return (
         <div>

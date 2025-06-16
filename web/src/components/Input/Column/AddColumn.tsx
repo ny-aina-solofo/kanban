@@ -2,11 +2,12 @@ import React,{ useState ,useLayoutEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeInput } from "../../../redux/inputSlice";
 import { addColumn } from '../../../redux/boardSlice';
+import { RootState } from '@/redux/store';
 
 const AddColumn = () => {
     const [inputValue,setInputValue] = useState('');
     const dispatch = useDispatch();
-    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
    
     const handleAddColumn = ()=>{
         if (!inputValue) return;

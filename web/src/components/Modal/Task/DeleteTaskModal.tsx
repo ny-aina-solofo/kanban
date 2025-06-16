@@ -5,22 +5,25 @@ import { openModal,closeModal } from '../../../redux/modalSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { deleteTask } from '../../../redux/boardSlice';
 import { useNavigate } from 'react-router';
+import { RootState } from '@/redux/store';
+import { TaskType } from '@/types';
 
 const DeleteTaskModal = () => {
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state) => state.boards.selectedTask);    
-    const activeBoardId = useSelector(state => state.boards.activeBoardId);
     const navigate = useNavigate();
-    
-    const handleDeleteTask = (task)=>{
+    const selectedTask = useSelector((state:RootState) => state.boards.selectedTask);    
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
+    const showTaskModal = useSelector((state:RootState) => state.modal.deleteTaskModal);
+
+    const handleDeleteTask = (task:TaskType | Record<string, any>)=>{
         dispatch(deleteTask({task,activeBoardId}));
-        dispatch(closeModal());
+        dispatch(closeModal('deleteTaskModal'));
         navigate(-1);
         // console.log(selectedTask.id_column);
     }
     return (
         <div>
-            <Modal show={openModal} onHide={closeModal} backdrop="static" keyboard={false}>
+            <Modal show={showTaskModal.open} onHide={()=>dispatch(closeModal('deleteTaskModal'))} backdrop="static" keyboard={false}>
                 <Modal.Body>
                     <h5 className="fw-bold text-danger mb-4">Supprimer {selectedTask.title} ?</h5>
                     <p className="mb-3">
@@ -29,7 +32,7 @@ const DeleteTaskModal = () => {
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={()=>dispatch(closeModal())}>
+                    <Button variant="secondary" onClick={()=>dispatch(closeModal('deleteTaskModal'))}>
                         Annuler
                     </Button>
                     <Button variant="danger" className='ms-3' onClick={()=>{

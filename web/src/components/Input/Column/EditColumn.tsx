@@ -1,16 +1,17 @@
+import { ColumnType } from '@/types';
 import React, { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
 interface ColumnProps {
-    columns: any;
-    setColumns:(columns:any)=>void;
+    columns: any[];
+    setColumns:(columns:any[])=>void;
 }
 
 
 const EditColumn = ({columns,setColumns}:ColumnProps) => {
     const editColumn = (index:number,value:string)=>{
         let newArray:any = [];
-        columns.forEach((col:any,i:number) => {
+        columns.forEach((col:ColumnType,i:number) => {
             if (i === index) {
                 newArray.push({...col,column_name : value});
             } else {
@@ -21,14 +22,14 @@ const EditColumn = ({columns,setColumns}:ColumnProps) => {
     }
     
     const deleteColumn = (id_column:number)=>{
-        setColumns(columns.filter((col:any) => col.id_column !== id_column));
+        setColumns(columns.filter((col:ColumnType) => col.id_column !== id_column));
     }
     
     return(
         <div>
             {columns.length > 0 ? (
                 <div className="">
-                    {columns.map((col:any,index:number) => (
+                    {columns.map((col:ColumnType,index:number) => (
                         <div 
                             key={col.id_column} 
                             className='mb-3'

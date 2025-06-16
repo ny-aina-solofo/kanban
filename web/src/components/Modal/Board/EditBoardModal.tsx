@@ -4,27 +4,29 @@ import { openModal,closeModal } from '../../../redux/modalSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { editBoard } from '../../../redux/boardSlice';
 import EditColumn from '../../Input/Column/EditColumn';
+import { RootState } from '@/redux/store';
 
 const EditBoardModal = () => {
     const dispatch = useDispatch();
-    const selectedBoard = useSelector((state) => state.boards.selectedBoard);    
-    const [boardName,setBoardName]= useState(selectedBoard.board_name);
+    const selectedBoard = useSelector((state:RootState) => state.boards.selectedBoard);    
+    const [boardName,setBoardName]= useState(selectedBoard?.board_name || "");
     const [columns, setColumns] = useState(selectedBoard?.column || [] );
-    
-    const handleEditBoard = (id_board)=>{
+    const showBoardModal = useSelector((state:RootState) => state.modal.editBoardModal);
+
+    const handleEditBoard = (id_board:number)=>{
         dispatch(editBoard({id_board,boardName,columns}))
-        dispatch(closeModal());
+        dispatch(closeModal('editBoardModal'));
         console.log(id_board);
     }
     
     return(
         <div>
-            <Modal show={openModal} onHide={closeModal} backdrop="static" keyboard={false}>
+            <Modal show={showBoardModal.open} onHide={()=>dispatch(closeModal('editBoardModal'))} backdrop="static" keyboard={false}>
                 <Modal.Body>
                     <header className='mb-4 d-flex justify-content-between'>
-                        <h5 className='fw-bold mb-4'>Modifier {selectedBoard.board_name}</h5>
+                        <h5 className='fw-bold mb-4'>Modifier {selectedBoard?.board_name || ""}</h5>
                         <button className="btn-close" type="button" onClick={()=>{
-                                dispatch(closeModal());setBoardName('');
+                                dispatch(closeModal('editBoardModal'));setBoardName('');
                             }}> 
                         </button>
                     </header>
@@ -44,7 +46,7 @@ const EditBoardModal = () => {
                     <button 
                         className='btn btn-primary form form-control' 
                         onClick={()=>{
-                            handleEditBoard(selectedBoard.id_board);
+                            handleEditBoard(selectedBoard?.id_board || 0);
                         }}
                     >
                         Enregistrer

@@ -2,12 +2,7 @@ import { openModal } from "../../redux/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedBoard } from "../../redux/boardSlice";
 import React from "react";
-
-interface BoardType {
-    id_board: number;
-    board_name: string;
-    column: any[];
-}
+import { BoardType } from "@/types";
 
 interface BoardProps {
     board: BoardType;

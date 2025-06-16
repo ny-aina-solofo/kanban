@@ -2,22 +2,25 @@ import React,{ useState ,useLayoutEffect } from 'react'
 import AddSubtask from '../Input/Subtask/AddSubtask';
 import { useDispatch,useSelector } from 'react-redux';
 import { deleteSubtask, updateCheckbox } from '../../redux/boardSlice';
+import { SubtaskType } from '@/types';
+import { RootState } from '@/redux/store';
+
 
 interface SubtaskProps {
-    subtasks: any;
+    subtasks: [];
 }
 
 
 const Subtask = ({subtasks}:SubtaskProps) => {
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state:any) => state.boards.selectedTask);
-    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
-    const addSubtask = useSelector((state:any)=>state.input.addSubtask);
+    const selectedTask = useSelector((state:RootState) => state.boards.selectedTask);
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
+    const addSubtask = useSelector((state:RootState)=>state.input.addSubtask);
 
-    const updateDone = (id_subtask:any)=>{
+    const updateDone = (id_subtask:number)=>{
         dispatch(updateCheckbox({id_subtask,tasks : selectedTask,activeBoardId})); 
     }
-    const handleDelete = (id_subtask:any)=>{
+    const handleDelete = (id_subtask:number)=>{
         dispatch(deleteSubtask({id_subtask,tasks : selectedTask,activeBoardId})); 
     }
     return(
@@ -27,7 +30,7 @@ const Subtask = ({subtasks}:SubtaskProps) => {
                 className="mt-2" 
                 // style={{overflowY:"scroll", height:"70px"}}
             >
-                {subtasks.map((sub:any) =>
+                {subtasks.map((sub:SubtaskType) =>
                     <li key={sub.id_subtask} 
                         style={{
                             listStyle: 'none',

@@ -1,26 +1,40 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction,createAsyncThunk } from "@reduxjs/toolkit";
 import boardsData from "../data.json";
-import { arrayMove } from "@dnd-kit/sortable";
-import { BoardType,TaskType,SubtaskType,ColumnType } from "@/types";
+import { BoardType,TaskType,SubtaskType,ColumnType, BoardState } from "@/types";
+import { fetchBoards } from "./fetchBoards";
 
-interface BoardState {
-    boards: any;
-    activeBoardId: number | null;
-    selectedBoard: BoardType | null;
-    selectedTask: TaskType | Record<string, any>;
-}
-
-// Initial state
 const initialState: BoardState = {
+    // boards: [{id_board: -1, board_name: "",column: []}],
     boards: boardsData.boards,
-    activeBoardId: boardsData.boards[0]?.id_board || null,
+    // activeBoardId: null,
+    activeBoardId: boardsData.boards[0].id_board,
     selectedBoard: null,
     selectedTask: {},
+    status: "idle",
+    error: null,
 };
 
 const boardSlice = createSlice({
     name: "boards",
     initialState,
+    extraReducers: (builder) => {
+        builder
+          .addCase(fetchBoards.pending, (state) => {
+            state.status = 'loading';
+            state.error = null;
+          })
+          .addCase(fetchBoards.fulfilled, (state, action) => {
+            state.status = "received";
+            state.boards = action.payload;
+            if (state.activeBoardId === null && state.boards.length > 0) {
+                state.activeBoardId = state.boards[0].id_board;
+            }
+          })
+          .addCase(fetchBoards.rejected, (state, action) => {
+            state.status = "rejected";
+            state.error = action.payload || "Cannot load data";
+          });
+      },
     reducers: {
         setActiveBoard: (state, action: PayloadAction<number | null>) => {
             state.activeBoardId = action.payload;
@@ -40,13 +54,13 @@ const boardSlice = createSlice({
         },
         deleteBoard: (state, action: PayloadAction<number>) => {
             const id_board = action.payload;
-            const updatedBoard = state.boards.filter((board:any) => board.id_board !== id_board);
+            const updatedBoard = state.boards.filter((board:BoardType) => board.id_board !== id_board);
             state.boards = updatedBoard;
             state.activeBoardId = updatedBoard.length > 0 ? updatedBoard[0].id_board : null;
         },
         editBoard: (state, action: PayloadAction<{ id_board: number; boardName: string; columns: ColumnType[] }>) => {
             const { id_board, boardName, columns } = action.payload;
-            const board = state.boards.find((board:any) => board.id_board === id_board);
+            const board = state.boards.find((board:BoardType) => board.id_board === id_board);
             if (board) {
                 board.board_name = boardName;
                 board.column = columns;
@@ -54,10 +68,10 @@ const boardSlice = createSlice({
         },
 
         // Column
-        addColumn: (state, action: PayloadAction<{ id_board: number; columnName: string }>) => {
+        addColumn: (state, action: PayloadAction<{ id_board: number | null; columnName: string }>) => {
             const { id_board, columnName } = action.payload;
             const newID = Date.now();
-            const board = state.boards.find((board:any) => board.id_board === id_board);
+            const board = state.boards.find((board:BoardType) => board.id_board === id_board);
             const column = board?.column || [];
             const newColumn: ColumnType = {
                 id_column: newID,
@@ -69,16 +83,16 @@ const boardSlice = createSlice({
         },
 
         // Task
-        setSelectedTask: (state, action: PayloadAction<TaskType>) => {
+        setSelectedTask: (state, action: PayloadAction<TaskType | Record<string, any>>) => {
             state.selectedTask = action.payload;
             localStorage.setItem("selectedTask", JSON.stringify(action.payload));
         },
-        addTask: (state, action: PayloadAction<{ taskName: string; description: string; id_column: number; subtasks: string[]; id_board: number }>) => {
+        addTask: (state, action: PayloadAction<{ taskName: string; description: string; id_column: number; subtasks: string[]; id_board: number | null }>) => {
             const { taskName, description, id_column, subtasks, id_board } = action.payload;
             const newID = Date.now();
-            const board = state.boards.find((board:any) => board.id_board === id_board);
-            const column = board?.column.find((col:any) => col.id_column === id_column);
-            const newSubtasks: SubtaskType[] = subtasks.map((name) => ({
+            const board = state.boards.find((board:BoardType) => board.id_board === id_board);
+            const column = board?.column.find((col:ColumnType) => col.id_column === id_column);
+            const newSubtasks : SubtaskType[] = subtasks.map((name) => ({
                 id_subtask: Date.now(),
                 libelle: name,
                 done: false,
@@ -93,18 +107,18 @@ const boardSlice = createSlice({
             };
             if (column) column.tasks = [...(column.tasks || []), newTask];
         },
-        deleteTask: (state, action: PayloadAction<{ task: TaskType; activeBoardId: number }>) => {
+        deleteTask: (state, action: PayloadAction<{ task: TaskType | Record<string, any>; activeBoardId: number | null }>) => {
             const { task, activeBoardId } = action.payload;
-            const board = state.boards.find((b:any) => b.id_board === activeBoardId);
-            const column = board?.column.find((col:any) => col.id_column === task.id_column);
-            if (column) column.tasks = column.tasks.filter((t:any) => t.id_task !== task.id_task);
+            const board = state.boards.find((b:BoardType) => b.id_board === activeBoardId);
+            const column = board?.column.find((col:ColumnType) => col.id_column === task.id_column);
+            if (column) column.tasks = column.tasks.filter((t:TaskType) => t.id_task !== task.id_task);
         },
-        editDescription: (state, action: PayloadAction<{ description: string; task: TaskType; activeBoardId: number }>) => {
+        editDescription: (state, action: PayloadAction<{ description: string; task: TaskType | Record<string, any>; activeBoardId: number | null }>) => {
             const { description, task, activeBoardId } = action.payload;
-            const board = state.boards.find((b:any) => b.id_board === activeBoardId);
-            const column = board?.column.find((col:any) => col.id_column === task.id_column);
+            const board = state.boards.find((b:BoardType) => b.id_board === activeBoardId);
+            const column = board?.column.find((col:ColumnType) => col.id_column === task.id_column);
             if (column) {
-                column.tasks = column.tasks.map((t:any) =>
+                column.tasks = column.tasks.map((t:TaskType) =>
                     t.id_task !== task.id_task ? t : { ...t, description }
                 );
             }
@@ -112,12 +126,12 @@ const boardSlice = createSlice({
                 state.selectedTask.description = description;
             }
         },
-        editTitle: (state, action: PayloadAction<{ title: string; task: TaskType; activeBoardId: number }>) => {
+        editTitle: (state, action: PayloadAction<{ title: string; task: TaskType | Record<string, any>; activeBoardId: number | null }>) => {
             const { title, task, activeBoardId } = action.payload;
-            const board = state.boards.find((b:any) => b.id_board === activeBoardId);
-            const column = board?.column.find((col:any) => col.id_column === task.id_column);
+            const board = state.boards.find((b:BoardType) => b.id_board === activeBoardId);
+            const column = board?.column.find((col:ColumnType) => col.id_column === task.id_column);
             if (column) {
-                column.tasks = column.tasks.map((t:any) =>
+                column.tasks = column.tasks.map((t:TaskType) =>
                     t.id_task !== task.id_task ? t : { ...t, title }
                 );
             }
@@ -125,28 +139,16 @@ const boardSlice = createSlice({
                 state.selectedTask.title = title;
             }
         },
-        changeTaskColumn: (state, action: PayloadAction<{ id_board: number; oldColumnId: number; newColumnId: number; id_task: number }>) => {
+        changeTaskColumn: (state, action: PayloadAction<{ id_board: number | null; oldColumnId: number; newColumnId: number; id_task: number }>) => {
             const { id_board, oldColumnId, newColumnId, id_task } = action.payload;
-            const board = state.boards.find((b:any) => b.id_board === id_board);
-            const oldColumn = board?.column.find((c:any) => c.id_column === oldColumnId);
-            const newColumn = board?.column.find((c:any) => c.id_column === newColumnId);
-            const task = oldColumn?.tasks.find((t:any) => t.id_task === id_task);
+            const board = state.boards.find((b:BoardType) => b.id_board === id_board);
+            const oldColumn = board?.column.find((c:ColumnType) => c.id_column === oldColumnId);
+            const newColumn = board?.column.find((c:ColumnType) => c.id_column === newColumnId);
+            const task = oldColumn?.tasks.find((t:TaskType) => t.id_task === id_task);
             if (oldColumn && newColumn && task) {
-                oldColumn.tasks = oldColumn.tasks.filter((t:any) => t.id_task !== id_task);
+                oldColumn.tasks = oldColumn.tasks.filter((t:TaskType) => t.id_task !== id_task);
                 task.id_column = newColumnId;
                 newColumn.tasks = [...(newColumn.tasks || []), task];
-            }
-        },
-        reorderTask: (state, action: PayloadAction<{ id_board: number; id_column: number; active: number; over: number }>) => {
-            const { id_board, id_column, active, over } = action.payload;
-            const board = state.boards.find((b:any) => b.id_board === id_board);
-            const column = board?.column.find((col:any) => col.id_column === id_column);
-            const tasks = column?.tasks || [];
-            const getTaskPosition = (id: number) => tasks.findIndex((t:any) => t.id_task === id);
-            const originalPosition = getTaskPosition(active);
-            const newPosition = getTaskPosition(over);
-            if (column) {
-                column.tasks = arrayMove(tasks, originalPosition, newPosition);
             }
         },
         moveTask: (
@@ -154,19 +156,19 @@ const boardSlice = createSlice({
             action: PayloadAction<{
                 boardId: string;
                 oldColumnId: string;
-                nextColumnId: string; // Doit être une string, car nous gérons les deux cas ici
+                nextColumnId: string; 
                 taskId: string;
                 index?: any;
             }>
         ) => {
             const { boardId, nextColumnId, oldColumnId, taskId, index } = action.payload;
         
-            const board = state.boards.find((b:any) => b.id_board.toString() === boardId);
+            const board = state.boards.find((b:BoardType) => b.id_board.toString() === boardId);
         
-            const oldColumn = board.column.find((col:any) => col.id_column.toString() === oldColumnId);
+            const oldColumn = board.column.find((col:ColumnType) => col.id_column.toString() === oldColumnId);
         
             const nextColumn = nextColumnId
-                ? board.column.find((col:any) => col.id_column.toString() === nextColumnId)
+                ? board.column.find((col:ColumnType) => col.id_column.toString() === nextColumnId)
                 : oldColumn;
     
 
@@ -194,11 +196,11 @@ const boardSlice = createSlice({
         },
 
         // Subtask
-        addSubtask: (state, action: PayloadAction<{ libelle: string; tasks: TaskType; activeBoardId: number }>) => {
+        addSubtask: (state, action: PayloadAction<{ libelle: string; tasks: TaskType | Record<string, any>; activeBoardId: number | null }>) => {
             const { libelle, tasks, activeBoardId } = action.payload;
-            const board = state.boards.find((b:any) => b.id_board === activeBoardId);
-            const column = board?.column.find((col:any) => col.id_column === tasks.id_column);
-            const task = column?.tasks.find((t:any) => t.id_task === tasks.id_task);
+            const board = state.boards.find((b:BoardType) => b.id_board === activeBoardId);
+            const column = board?.column.find((col:ColumnType) => col.id_column === tasks.id_column);
+            const task = column?.tasks.find((t:TaskType) => t.id_task === tasks.id_task);
             const newSubtask: SubtaskType = {
                 id_subtask: Date.now(),
                 libelle,
@@ -211,12 +213,12 @@ const boardSlice = createSlice({
                 state.selectedTask.subtasks = [...(state.selectedTask.subtasks || []), newSubtask];
             }
         },
-        updateCheckbox: (state, action: PayloadAction<{ id_subtask: number; tasks: TaskType; activeBoardId: number }>) => {
+        updateCheckbox: (state, action: PayloadAction<{ id_subtask: number; tasks: TaskType | Record<string, any>; activeBoardId: number | null }>) => {
             const { id_subtask, tasks, activeBoardId } = action.payload;
-            const board = state.boards.find((b:any) => b.id_board === activeBoardId);
-            const column = board?.column.find((col:any) => col.id_column === tasks.id_column);
-            const task = column?.tasks.find((t:any) => t.id_task === tasks.id_task);
-            const subtask = task?.subtasks.find((s:any) => s.id_subtask === id_subtask);
+            const board = state.boards.find((b:BoardType) => b.id_board === activeBoardId);
+            const column = board?.column.find((col:ColumnType) => col.id_column === tasks.id_column);
+            const task = column?.tasks.find((t:TaskType) => t.id_task === tasks.id_task);
+            const subtask = task?.subtasks.find((s:SubtaskType) => s.id_subtask === id_subtask);
             if (subtask) subtask.done = !subtask.done;
 
             if (state.selectedTask.id_task === tasks.id_task) {
@@ -224,12 +226,12 @@ const boardSlice = createSlice({
                 if (selectedSubtask) selectedSubtask.done = !selectedSubtask.done;
             }
         },
-        deleteSubtask: (state, action: PayloadAction<{ id_subtask: number; tasks: TaskType; activeBoardId: number }>) => {
+        deleteSubtask: (state, action: PayloadAction<{ id_subtask: number; tasks: TaskType | Record<string, any>; activeBoardId: number | null }>) => {
             const { id_subtask, tasks, activeBoardId } = action.payload;
-            const board = state.boards.find((b:any) => b.id_board === activeBoardId);
-            const column = board?.column.find((col:any) => col.id_column === tasks.id_column);
-            const task = column?.tasks.find((t:any) => t.id_task === tasks.id_task);
-            if (task) task.subtasks = task.subtasks.filter((s:any) => s.id_subtask !== id_subtask);
+            const board = state.boards.find((b:BoardType) => b.id_board === activeBoardId);
+            const column = board?.column.find((col:ColumnType) => col.id_column === tasks.id_column);
+            const task = column?.tasks.find((t:TaskType) => t.id_task === tasks.id_task);
+            if (task) task.subtasks = task.subtasks.filter((s:SubtaskType) => s.id_subtask !== id_subtask);
 
             if (state.selectedTask.id_task === tasks.id_task) {
                 state.selectedTask.subtasks = state.selectedTask.subtasks.filter((s: SubtaskType) => s.id_subtask !== id_subtask);
@@ -254,7 +256,6 @@ export const {
     updateCheckbox,
     deleteSubtask,
     changeTaskColumn,
-    reorderTask,
     moveTask
 } = boardSlice.actions;
 

@@ -9,21 +9,22 @@ import EditTitle from "../Input/Task/EditTitle";
 import { setSelectedTask } from "../../redux/boardSlice";
 import { openModal } from "../../redux/modalSlice";
 import ChangeTaskStatus from "../Select/ChangeTaskStatus";
+import { RootState } from "@/redux/store";
+import { BoardType, ColumnType } from "@/types";
 
 const ViewTask = ()=> {
-    // const { id_task } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const boards = useSelector((state:any) => state.boards.boards);
-    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
-    const activeBoard = boards.find((board:any) => board.id_board === activeBoardId);
-    const selectedTask = useSelector((state:any) => state.boards.selectedTask);
+    const boards = useSelector((state:RootState) => state.boards.boards);
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
+    const activeBoard = boards.find((board:BoardType) => board.id_board === activeBoardId);
+    const selectedTask = useSelector((state:RootState) => state.boards.selectedTask);
     const columns = activeBoard?.column || [] ;
-    const column_name = columns.find((col:any) => col.id_column === selectedTask.id_column)?.column_name || '';
+    const column_name = columns.find((col:ColumnType) => col.id_column === selectedTask.id_column)?.column_name || '';
 
-    const deleteTaskModal = useSelector((state:any) => state.modal.deleteTaskModal);
-    const editDescription = useSelector((state:any)=>state.input.editDescription);
-    const editTitle = useSelector((state:any)=>state.input.editTitle);
+    const deleteTaskModal = useSelector((state:RootState) => state.modal.deleteTaskModal);
+    const editDescription = useSelector((state:RootState)=>state.input.editDescription);
+    const editTitle = useSelector((state:RootState)=>state.input.editTitle);
 
     useEffect(() => {
         if (!selectedTask?.id_task) {

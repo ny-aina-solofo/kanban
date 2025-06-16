@@ -2,18 +2,19 @@ import React,{ useState ,useLayoutEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeInput } from '../../../redux/inputSlice';
 import { addSubtask } from '../../../redux/boardSlice';
+import { RootState } from '@/redux/store';
 
 const AddSubtask = () => {
     const dispatch = useDispatch();
     const [inputValue,setInputValue] = useState('');
-    const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
-    const selectedTask = useSelector((state:any) => state.boards.selectedTask);
+    const activeBoardId = useSelector((state:RootState) => state.boards.activeBoardId);
+    const selectedTask = useSelector((state:RootState) => state.boards.selectedTask);
     
     const handleAddSubtask = ()=>{
         if (!inputValue) return;
         dispatch(addSubtask({
             libelle : inputValue,
-            tasks : selectedTask,
+            tasks : selectedTask as any,
             activeBoardId
         })); 
         dispatch(closeInput());

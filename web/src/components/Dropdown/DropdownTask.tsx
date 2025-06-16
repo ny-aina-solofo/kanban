@@ -2,10 +2,11 @@ import { openModal } from "../../redux/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedTask } from "../../redux/boardSlice";
 import { openInput } from "../../redux/inputSlice";
+import { RootState } from "@/redux/store";
 
 const DropdownTask = () => {
     const dispatch = useDispatch();
-    const selectedTask = useSelector((state:any) => state.boards.selectedTask);
+    const selectedTask = useSelector((state:RootState) => state.boards.selectedTask);
     
     return (
         <div>
@@ -22,7 +23,7 @@ const DropdownTask = () => {
                         style={{cursor:"pointer"}} 
                         onClick={() =>{
                             dispatch(openModal("deleteTaskModal"));
-                            dispatch(setSelectedTask(selectedTask));
+                            dispatch(setSelectedTask(selectedTask as any));
                         }}
                     >
                     supprimer

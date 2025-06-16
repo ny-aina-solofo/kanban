@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import {
 	CollisionDetection,
 	KeyboardSensor,    	
@@ -17,14 +17,18 @@ import {
 	useSensors,
 } from "@dnd-kit/core";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BoardType } from "@/types";
+import { BoardType, ColumnType, TaskType } from "@/types";
 import { moveTask } from "@/redux/boardSlice";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 
-export const useDnd = (board: BoardType) => {
-	const dispatch = useDispatch();
 
+export const useDnd = (board:BoardType) => {
+	const dispatch = useDispatch();
+	// const boards = useSelector((state:any) => state.boards.boards);
+	// const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
+    // const board = boards.find((board:BoardType) => board.id_board === activeBoardId);
+    
 	const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 	const lastOverId = useRef<UniqueIdentifier | null>(null);
 	const recentlyMovedToNewContainer = useRef(false);
@@ -50,7 +54,7 @@ export const useDnd = (board: BoardType) => {
 		(args) => {
 			if (
 				activeId &&
-				board.column.map((col) => col.id_column.toString()).includes(activeId.toString())
+				board.column.map((col:ColumnType) => col.id_column.toString()).includes(activeId.toString())
 			) {
 				return closestCenter({
 					...args,
@@ -70,11 +74,11 @@ export const useDnd = (board: BoardType) => {
 			let overId = getFirstCollision(intersections, "id");
 
 			if (overId != null) {
-				if (board.column.map((col) => col.id_column.toString()).includes(overId.toString())) {
+				if (board.column.map((col:ColumnType) => col.id_column.toString()).includes(overId.toString())) {
 					//const containerItems = items[overId];
 					const containerItems = board.column
-						.find((col) => col.id_column.toString() === overId)
-						?.tasks?.map((task) => task.id_task.toString()) || [];
+						.find((col:ColumnType) => col.id_column.toString() === overId)
+						?.tasks?.map((task:TaskType) => task.id_task.toString()) || [];
 					// If a container is matched and it contains items (column 'A', 'B', 'C')
 					if (containerItems && containerItems.length > 0) {
 						// Return the closest droppable within that container
@@ -112,8 +116,8 @@ export const useDnd = (board: BoardType) => {
 	const activeTask = useMemo(
 		() =>
 			board.column
-				.find((col) => col?.tasks?.some((task) => task.id_task.toString() === activeId))
-				?.tasks.find((task) => task.id_task.toString() === activeId) || null,
+				.find((col:ColumnType) => col?.tasks?.some((task:TaskType) => task.id_task.toString() === activeId))
+				?.tasks.find((task:TaskType) => task.id_task.toString() === activeId) || null,
 		[activeId, board.column]
 	);
 
@@ -126,7 +130,7 @@ export const useDnd = (board: BoardType) => {
 	
 	function findContainer(id: string) {
 		return board.column.find(
-			(column) =>
+			(column:ColumnType) =>
 				column.id_column.toString() === id || (column?.tasks || []).some((task) => task.id_task.toString() === id)
 		);
 	}
@@ -149,7 +153,7 @@ export const useDnd = (board: BoardType) => {
 
 		if (!oldColumn || !overColumn || oldColumn === overColumn) return;
 
-		const overIndex = overColumn?.tasks?.map((task) => task.id_task.toString()).indexOf(overId) || [];
+		const overIndex = overColumn?.tasks?.map((task:TaskType) => task.id_task.toString()).indexOf(overId) || [];
 
 		const isBelowOverItem =
 			over &&
@@ -191,8 +195,8 @@ export const useDnd = (board: BoardType) => {
 			return;
 		}
 
-		const oldIndex = oldColumn?.tasks?.map((task) => task.id_task.toString()).indexOf(taskId) || [];
-		const overIndex = overColumn?.tasks?.map((task) => task.id_task.toString()).indexOf(overId) || [];
+		const oldIndex = oldColumn?.tasks?.map((task:TaskType) => task.id_task.toString()).indexOf(taskId) || [];
+		const overIndex = overColumn?.tasks?.map((task:TaskType) => task.id_task.toString()).indexOf(overId) || [];
 
 		if (oldIndex === overIndex) {
 			setActiveId(null);
