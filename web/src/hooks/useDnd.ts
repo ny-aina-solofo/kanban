@@ -20,15 +20,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BoardType, ColumnType, TaskType } from "@/types";
 import { moveTask } from "@/redux/boardSlice";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { throttle } from "throttle-debounce";
 
 
 
 export const useDnd = (board:BoardType) => {
 	const dispatch = useDispatch();
-	// const boards = useSelector((state:any) => state.boards.boards);
-	// const activeBoardId = useSelector((state:any) => state.boards.activeBoardId);
-    // const board = boards.find((board:BoardType) => board.id_board === activeBoardId);
-    
+
 	const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 	const lastOverId = useRef<UniqueIdentifier | null>(null);
 	const recentlyMovedToNewContainer = useRef(false);
@@ -78,7 +76,7 @@ export const useDnd = (board:BoardType) => {
 					//const containerItems = items[overId];
 					const containerItems = board.column
 						.find((col:ColumnType) => col.id_column.toString() === overId)
-						?.tasks?.map((task:TaskType) => task.id_task.toString()) || [];
+						?.tasks.map((task:TaskType) => task.id_task.toString());
 					// If a container is matched and it contains items (column 'A', 'B', 'C')
 					if (containerItems && containerItems.length > 0) {
 						// Return the closest droppable within that container
@@ -116,9 +114,32 @@ export const useDnd = (board:BoardType) => {
 	const activeTask = useMemo(
 		() =>
 			board.column
-				.find((col:ColumnType) => col?.tasks?.some((task:TaskType) => task.id_task.toString() === activeId))
-				?.tasks.find((task:TaskType) => task.id_task.toString() === activeId) || null,
+				.find((col:ColumnType) => col.tasks.some((task:TaskType) => task.id_task.toString() === activeId))
+				?.tasks.find((task:TaskType) => task.id_task.toString() === activeId),
 		[activeId, board.column]
+	);
+	
+	interface MoveTask {
+		boardId: string;
+		oldColumnId: string;
+		nextColumnId: string; 
+		taskId: string;
+		index?: number;
+	}
+	const handleMoveTask = useMemo(
+		() =>
+			throttle(75, ({ boardId, oldColumnId, nextColumnId, taskId, index }:MoveTask) =>
+				dispatch(
+					moveTask({
+						boardId,
+						oldColumnId,
+						nextColumnId,
+						taskId,
+						index,
+					})
+				)
+			),
+		[dispatch]
 	);
 
 
@@ -131,7 +152,7 @@ export const useDnd = (board:BoardType) => {
 	function findContainer(id: string) {
 		return board.column.find(
 			(column:ColumnType) =>
-				column.id_column.toString() === id || (column?.tasks || []).some((task) => task.id_task.toString() === id)
+				column.id_column.toString() === id || column.tasks.some((task) => task.id_task.toString() === id)
 		);
 	}
 
@@ -153,7 +174,7 @@ export const useDnd = (board:BoardType) => {
 
 		if (!oldColumn || !overColumn || oldColumn === overColumn) return;
 
-		const overIndex = overColumn?.tasks?.map((task:TaskType) => task.id_task.toString()).indexOf(overId) || [];
+		const overIndex = overColumn.tasks.map((task:TaskType) => task.id_task.toString()).indexOf(overId);
 
 		const isBelowOverItem =
 			over &&
@@ -162,22 +183,29 @@ export const useDnd = (board:BoardType) => {
 
 		const modifier = isBelowOverItem ? 1 : 0;
 
-		// const newIndex = overIndex >= 0 ? overIndex + modifier : undefined;
-		const newIndex = overIndex === 0 ? overIndex + modifier : undefined;
+		const newIndex = overIndex >= 0 ? overIndex + modifier : undefined;
+
 		recentlyMovedToNewContainer.current = true;
 
-		dispatch(
-			moveTask({
-				boardId: board.id_board.toString(),
-				oldColumnId: oldColumn.id_column.toString(),
-				nextColumnId: overColumn.id_column.toString(),
-				taskId,
-				index: overId !== overColumn.id_column.toString() ? newIndex : undefined,
-			})
-		);
+		// console.log("--- DRAG OVER ---");
+		// console.log("Active ID:", active.id.toString());
+		// console.log("Over ID:", over.id.toString());
+		// console.log("Old Column:", oldColumn?.column_name);
+		// console.log("Over Column:", overColumn?.column_name);
+		// console.log("Over Index (before modification):", overIndex);
+		// console.log("New Index (after calculation):", newIndex);
+
+		handleMoveTask({
+			boardId: board.id_board.toString(),
+			oldColumnId: oldColumn.id_column.toString(),
+			nextColumnId: overColumn.id_column.toString(),
+			taskId,
+			index: overId !== overColumn.id_column.toString() ? newIndex : undefined,
+		})
+		
 	}
 	
-	function handleDragEnd(event: DragEndEvent) {
+	function handleDragEnd(event: DragEndEvent) { 
 		const { over, active } = event;
 		if (!over) {
 			setActiveId(null);
@@ -195,14 +223,20 @@ export const useDnd = (board:BoardType) => {
 			return;
 		}
 
-		const oldIndex = oldColumn?.tasks?.map((task:TaskType) => task.id_task.toString()).indexOf(taskId) || [];
-		const overIndex = overColumn?.tasks?.map((task:TaskType) => task.id_task.toString()).indexOf(overId) || [];
+		const oldIndex = oldColumn.tasks.map((task:TaskType) => task.id_task.toString()).indexOf(taskId);
+		const overIndex = overColumn.tasks.map((task:TaskType) => task.id_task.toString()).indexOf(overId);
 
 		if (oldIndex === overIndex) {
 			setActiveId(null);
 			return;
 		}
-
+		// console.log("--- DRAG END ---");
+		// console.log("Active ID:", active.id.toString());
+		// console.log("Over ID:", over.id.toString());
+		// console.log("Old Column:", oldColumn?.column_name);
+		// console.log("Over Column:", overColumn?.column_name);
+		// console.log("Old Index:", oldIndex);
+		// console.log("Over Index (from handleDragEnd):", overIndex);
 
 		dispatch(
 			moveTask({

@@ -25,7 +25,7 @@ const DroppableColumn = React.memo(({ columns }: ColumnProps) => {
 			id={`${columns.id_column}`}
 		>
 			<div ref={setNodeRef}>
-                <Column key={columns.id_column} columns={columns} />
+                <Column columns={columns} isOver={isOver} />
 			</div>
 		</SortableContext>
 	);

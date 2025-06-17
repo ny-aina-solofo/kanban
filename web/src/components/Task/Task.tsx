@@ -15,9 +15,7 @@ const Task = ({tasks}:TaskProps) => {
 
     const viewTask = () =>{
         dispatch(setSelectedTask(tasks));
-        navigate(`/view-task/${tasks.id_task}`);
-        console.log("ici");
-        
+        navigate(`/view-task/${tasks.id_task}`);        
     }
     return (
         <div onPointerDown={(e) => e.stopPropagation()} >

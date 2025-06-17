@@ -7,46 +7,6 @@
         {
           "tasks": [
             {
-              "title": "Build UI for onboarding flow",
-              "id_task": 18,
-              "subtasks": [
-                {
-                  "done": true,
-                  "id_task": 18,
-                  "libelle": "Sign up page",
-                  "id_subtask": 19
-                },
-                {
-                  "done": false,
-                  "id_task": 18,
-                  "libelle": "Sign in page",
-                  "id_subtask": 20
-                },
-                {
-                  "done": false,
-                  "id_task": 18,
-                  "libelle": "Welcome page",
-                  "id_subtask": 21
-                }
-              ],
-              "id_column": 17,
-              "description": ""
-            },
-            {
-              "title": "Build UI for search",
-              "id_task": 19,
-              "subtasks": [
-                {
-                  "done": false,
-                  "id_task": 19,
-                  "libelle": "Search page",
-                  "id_subtask": 22
-                }
-              ],
-              "id_column": 17,
-              "description": ""
-            },
-            {
               "title": "Build settings UI",
               "id_task": 20,
               "subtasks": [
@@ -493,13 +453,13 @@
           "column_name": "todo"
         },
         {
-          "tasks": null,
+          "tasks": [],
           "id_board": 12,
           "id_column": 21,
           "column_name": "doing"
         },
         {
-          "tasks": null,
+          "tasks": [],
           "id_board": 12,
           "id_column": 22,
           "column_name": "done"
@@ -564,13 +524,13 @@
           "column_name": "now"
         },
         {
-          "tasks": null,
+          "tasks": [],
           "id_board": 13,
           "id_column": 24,
           "column_name": "next"
         },
         {
-          "tasks": null,
+          "tasks": [],
           "id_board": 13,
           "id_column": 25,
           "column_name": "later"

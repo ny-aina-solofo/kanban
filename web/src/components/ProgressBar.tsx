@@ -2,12 +2,12 @@ import { SubtaskType } from '@/types';
 import React,{ useState ,useLayoutEffect } from 'react'
 
 interface ProgressBarProps {
-    subtasks:[];
+    subtasks:SubtaskType[];
 } 
 
 const ProgressBar = ({subtasks}:ProgressBarProps) => {
     const [count,setCount] = useState(0);
-    const [subtask, setSubtask] = useState([]);
+    const [subtask, setSubtask] = useState<SubtaskType[]>([]);
     
     useLayoutEffect(() => {
         setSubtask(subtasks);

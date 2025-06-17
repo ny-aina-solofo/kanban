@@ -158,7 +158,7 @@ const boardSlice = createSlice({
                 oldColumnId: string;
                 nextColumnId: string; 
                 taskId: string;
-                index?: any;
+                index?: number;
             }>
         ) => {
             const { boardId, nextColumnId, oldColumnId, taskId, index } = action.payload;
@@ -173,24 +173,26 @@ const boardSlice = createSlice({
     
 
             if (oldColumn && nextColumn) {
-                const taskToMove = oldColumn.tasks.find((task:any) => task.id_task.toString() === taskId);
-                
-                taskToMove.id_column = nextColumn.id_column;
+                const task = oldColumn.tasks.find((task:TaskType) => task.id_task.toString() === taskId);
         
-                // --- Gérer la suppression de l'ancienne colonne ---
-                oldColumn.tasks = oldColumn.tasks.filter(
-                    (task:any) => task.id_task.toString() !== taskId
-                );
+                if (oldColumn.tasks) {
+                  oldColumn.tasks = oldColumn.tasks.filter(
+                    (task:TaskType) => task.id_task.toString() !== taskId
+                  );
+                }
         
-                // --- Gérer l'ajout à la nouvelle colonne ---
-                if (nextColumn.tasks) {
+                if (task) {
+                    task.id_column = nextColumn.id_column;
+            
                     if (index !== undefined) {
-                        nextColumn.tasks.splice(index, 0, taskToMove); // Insérer à l'index spécifié
+                        nextColumn.tasks = [
+                        ...nextColumn.tasks.slice(0, index),
+                        task,
+                        ...nextColumn.tasks.slice(index),
+                        ];
                     } else {
-                        nextColumn.tasks.push(taskToMove); // Ajouter à la fin
+                        nextColumn.tasks.push(task);
                     }
-                } else {
-                    nextColumn.tasks = [taskToMove]; // Si la colonne n'avait pas de tâches, en créer un nouveau tableau
                 }
             }
         },

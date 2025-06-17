@@ -5,9 +5,10 @@ import { ColumnType } from "@/types";
 
 interface ColumnProps {
     columns: ColumnType;
+    isOver:boolean
 }
 
-const Column = ({columns}:ColumnProps) => {
+const Column = ({columns,isOver}:ColumnProps) => {
     const tasks = columns?.tasks || []; 
 
     return (
