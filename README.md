@@ -1,30 +1,14 @@
 # KANBANTASK-APP
 
-**Front** : react, bootstrap  
-**Back** : node, express, mongodb  
-**CI / CD** : github actions  
-**Host**: github, render  
-**Environment** : dotenv  
-**Test** : vitest, jest, supertest  
-**Container**: docker  
-**Architectures**: monolithic
+Stack : react, node, express, pg, sequelize, bootstrap, react-bootstrap
 
-- [ ] View the optimal layout for the app depending on their device's screen size
-- [ ] See hover states for all interactive elements on the page
-- [ ] Create, read, update, and delete boards and tasks
-- [ ] Receive form validations when trying to create/edit boards and tasks
-- [ ] Mark subtasks as complete and move tasks between columns
-- [ ] Hide/show the board sidebar
-- [ ] Toggle the theme between light/dark modes
-- [ ] Allow users to drag and drop tasks to change their status and re-order them in a column
-- [ ] Build this project as a full-stack application
-- [ ] clean code
-- [ ] clean architecture
-- [ ] accessibility
-- [ ] test
-- [ ] performance
-- [ ] containerization
+- Board Sidebar 
+- Board : create-read-update-delete
+- Column-status : create-read-update-delete
+- Task : create-read-update-delete
+- Basculement de tâche entre colonne
+- Subtask : create-read-update-delete
+- Drag and drop task 
+- Drag and drop subtask
+- Dark mode
 
-&nbsp;  
-link :  
-github : [https://github.com/ny-aina-solofo/]
